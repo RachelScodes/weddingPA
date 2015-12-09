@@ -35,12 +35,12 @@ db.once('open', (callback) => {
 
 
 // controllers
-const home = require('./controllers/homeController')
-const user = require('./controllers/userController');
+// const home = require('./routes/homeRoutes')
+const user = require('./routes/userRoutes');
 
 // routes
-app.use('/', home)
-app.use('/users', user);
+// app.use('/', home)
+app.use('/user', user);
 
 
 

@@ -3,13 +3,98 @@
    <head>
       <meta charset="utf-8">
       <title>PlanThisWeddingFor.me</title>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
    </head>
    <body>
+      <h1>Login to PlanThisWeddingFor.me!</h1>
+      <nav class="top-nav">
+         <li id="new">Create Account</li>
+         <li id="login">Login to your Account</li>
+      </nav>
 
-      <div id="login-form">
-         <input type="text" placeholder="Username"></input>
-         <input type="password" placeholder="password"></input>
+      <div id="forms">
+         <div class="new-account form">
+            <input type="text" placeholder="Email Address"></input>
+            <input type="password" placeholder="Password"></input>
+            <br>What should we call you? Ex 'Mr & Mrs. Smith' or...:
+            <input type="text" placeholder="'Chris and Yulia'"></input>
+            <button class="new-account">Submit</button>
+         </div>
+         <div class="login form">
+            <input type="text" placeholder="email address"></input>
+            <input type="password" placeholder="password"></input>
+            <br>I am a <select class="login">
+               <option value="false">Wedding Planner</option>
+               <option value="true">Wedding Guest</option>
+            </select>
+            <button class="login">Submit</button>
+         </div>
       </div>
+
+      <script>
+      'use strict'
+      let doc = document
+      let accountForm = $('div.new-account');
+
+      let loginForm = $('div.login');
+
+      $('.top-nav').children().eq(0).click( ()=>{
+         $('#forms').append(accountForm)
+         loginForm.detach()
+      })
+      $('.top-nav').children().eq(1).click( ()=>{
+         accountForm.detach()
+         $('#forms').append(loginForm)
+      })
+
+      $('button.new-account').click(function() {
+         let email = accountForm.children('input').eq(0).val();
+         let password = accountForm.children('input').eq(1).val();
+         let greeting = accountForm.children('input').eq(2).val();
+         let newUserData = {
+            email: email,
+            password: password,
+            guest: false,
+            greeting: greeting
+         }
+         $.ajax({  // hit user create
+            url: "/user/new",
+            method: "POST",
+            data: newUserData
+         }).done(logEmIn(newUserData)); // login
+      });
+      $('button.login').click(function() {
+         let email = loginForm.children('input').eq(0).val();
+         let password = loginForm.children('input').eq(1).val();
+         let guest = loginForm.children('select').val();
+
+         let loginData = {
+            email: email,
+            password: password
+         }
+         logEmIn(loginData); // log em in
+      });
+
+      let logEmIn = function(data){
+         $.ajax({ // log em in
+            url: "/user/authenticate",
+            method: "POST",
+            data: data
+         }).done(showActions(data)) // show the next step
+      }
+
+      let showActions = function(info){
+         let guest = info.guest
+         if (guest == 'true') {
+            console.log('this is a guest. change your password, add address');
+         } else {
+            console.log('this is a planner. show add guests');
+         }
+      }
+
+      accountForm.detach();
+      loginForm.detach();
+      </script>
 
    </body>
 </html>

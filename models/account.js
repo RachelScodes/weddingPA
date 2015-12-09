@@ -5,14 +5,17 @@ let bcrypt = require('bcrypt');
 
 let accountSchema = new mongoose.Schema({
 
-  greeting: String,
-  users:{
+   greeting: String,
+   users:[{
       type:[User],
       required:true
-  },
-
-  first_emailed: Date,
-  last_emailed: Date
+      max: 3
+   }],
+   guests:[{
+        type: [User]
+   }],
+   created: Date,
+   updated: Date
 });
 
 let Account = mongoose.model('Account', accountSchema);
