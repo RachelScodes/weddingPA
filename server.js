@@ -8,23 +8,19 @@ const express    = require('express'),
       mongoose   = require('mongoose'),
       bodyParser = require('body-parser');
 
-
-
 // start express
 const app = express();
 
 // log all the things
-app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false}));
+app.use(logger('dev'));
 
 // static files
 app.use(express.static(path.join(__dirname, 'public')));
 
-
-
 // database & mongoose
-mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/HoopHub');
+mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/ptwfm');
 
 let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -32,17 +28,11 @@ db.once('open', (callback) => {
   console.log('mongoose connected');
 })
 
-
-
 // controllers
-// const home = require('./routes/homeRoutes')
-const user = require('./routes/userRoutes');
+const account = require('./routes/accountRoutes');
 
 // routes
-// app.use('/', home)
-app.use('/user', user);
-
-
+app.use('/account', account);
 
 // SERVER
 const server = app.listen(process.env.PORT || 3000, () => {
