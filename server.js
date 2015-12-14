@@ -19,6 +19,8 @@ app.use(logger('dev'));
 // static files
 app.use(express.static(path.join(__dirname, 'public')));
 
+
+
 // database & mongoose
 mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost/ptwfm');
 
@@ -28,11 +30,17 @@ db.once('open', (callback) => {
   console.log('mongoose connected');
 })
 
+
+
 // controllers
-const account = require('./routes/accountRoutes');
+let home    = require('./routes/homeRoutes');
+let account = require('./routes/accountRoutes');
 
 // routes
+app.use('/', home)
 app.use('/account', account);
+
+
 
 // SERVER
 const server = app.listen(process.env.PORT || 3000, () => {

@@ -5,30 +5,30 @@ const express  = require('express'),
       mongoose = require('mongoose'),
       jwt      = require('jsonwebtoken'),
       secret   = require('../config').secret,
-      Account     = require('../models/account.js'),
-      controller  = require('../controllers/accountController.js');
+      bcrypt   = require('bcrypt'),
+      account  = require('../controllers/accountController.js'),
+      router   = express.Router();
 
 // initialize app constants
-const app      = express(),
-      router   = express.Router();
+const app      = express();
       app.set('secret', secret);
 
 
 // routes!
 router.get('/', (req, res) => {
-   console.log('hit GET \'/\'');
+   console.log('hit GET \'/account\'');
    res.json({ success: true, message: 'got account?' });
 });
 
 router.post('/new', (req, res) => {
    console.log('hit POST \'/new\'',req.body);
-   res.json( controller.newAccount(req.body) )
+   res.json( account.newAccount(req.body) )
 });
 
 router.post('/authenticate', (req, res) => {
    console.log('hit POST \'/authenticate\'');
    let email = req.body.email, password = req.body.password;
-   res.json( controller.accountLogin(email,password,'email_1') );
+   res.json( account.accountLogin(email,password,'email_1') );
 });
 
 // // route middleware to verify token

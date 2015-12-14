@@ -5,27 +5,25 @@ let bcrypt = require('bcrypt');
 
 let accountSchema = new mongoose.Schema({
    greeting: String,
-   email_1: String, // planner
-   email_2: String, // bride/groom 1
-   email_3: String, // bride/groom 2
+   emails: Array,          // planner/bride/groom
    password: String,
    guests: {
-      party: Number,
-      id: Number,
-      rsvp: Boolean,
-      name: String,
-      email: String,
+      party: Number,       // id of account
+      index: Number,       // id of guest[index]
+      rsvp: Boolean,       // have they responded?
+      name: String,        // Full name of guest
+      email: String,       // guest email
       contact: [{
-         name: String, // selected from dropdown: Home, Work
-         street_one: String,
-         street_two: String,
+         // name: String,  // for multiple: selected from dropdown: Home, Work
+         street_1: String,
+         street_2: String,
          apt: String,
          city: String,
-         state: String, //selected from dropdown, will be 2 letters
-         zip: Number,
-         phone: Number,
-         first_emailed: Date,
-         last_emailed: Date
+         state: String,    //selected from dropdown, will be 2 letters
+         zip: Number,      // verify 5 digits
+         phone: Number,    // verify 10 digits
+         // first_emailed: Date,
+         // last_emailed: Date
       }],
    },
 });
