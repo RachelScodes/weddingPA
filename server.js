@@ -13,7 +13,7 @@ app.use(logger('dev'));
 app.use(express.static(path.join(__dirname, 'public')));
 // app.use('/', express.static('public'));
 
-let home    = require('./routes/homeController');
+let home    = require('./routes/homeRoutes.js');
 app.use('/home', home);
 
 // SERVER
