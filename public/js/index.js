@@ -86,13 +86,15 @@ $(function(){
    }
 
    let showActions = function(data){
-      //
-      myAccount = data.account[0]._id;
-      localStorage.setItem('token',data.token);
+      debugger
+      if (data.account[0]._id) {
+         myAccount = data.account[0]._id;
+         localStorage.setItem('token',data.token);
 
-      signinLinks.detach();
-      $('.forms').empty();
-      drawLogout(data.account[0])
+         signinLinks.detach();
+         $('.forms').empty();
+         drawLogout(data.account[0])
+      }
    }
 
    let drawLogout = function(data){

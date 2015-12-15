@@ -1,31 +1,15 @@
-'use strict';
+'use strict'
 
-let mongoose = require('mongoose');
-let bcrypt = require('bcrypt');
+let mongoose = require('mongoose'),
+    bcrypt   = require('bcrypt'),
+    Guest    = require('./guest.js');
+
 
 let accountSchema = new mongoose.Schema({
-   greeting: String,
-   emails: String,          // planner/bride/groom
-   password: String,
-   guests: {
-      party: Number,       // id of account
-      index: Number,       // id of guest[index]
-      rsvp: Boolean,       // have they responded?
-      name: String,        // Full name of guest
-      email: String,       // guest email
-      contact: [{
-         // name: String,  // for multiple: selected from dropdown: Home, Work
-         street_1: String,
-         street_2: String,
-         apt: String,
-         city: String,
-         state: String,    //selected from dropdown, will be 2 letters
-         zip: Number,      // verify 5 digits
-         phone: Number,    // verify 10 digits
-         // first_emailed: Date,
-         // last_emailed: Date
-      }],
-   },
+   greeting: {type: String, required: true},
+   emails: {type: String, required: true, unique: true}, // planner/bride/groom
+   password: {type: String, required: true},
+   guests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Guest' }]
 });
 
 accountSchema.pre('save', function(next){
