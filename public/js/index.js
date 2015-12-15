@@ -12,33 +12,34 @@ $(function(){
 
    let doc = document,
        loginLinks  = $('ul.login-signup'),
-       accountForm = $('div.new-account'),
-       loginForm   = $('div.login'),
+       accountForm = $('div.new-account-form'),
+       loginForm   = $('div.login-form'),
        myAccount;
 
    loginLinks.children().eq(0).click( ()=>{
       loginForm.detach()
-      $('#forms').append(accountForm)
+      $('.forms').append(accountForm)
    })
 
    loginLinks.children().eq(1).click( ()=>{
       accountForm.detach()
-      $('#forms').append(loginForm)
+      $('.forms').append(loginForm)
    })
 
    $('button.new-account').click(function() {
-      let email1 = accountForm.children('input').eq(0).val();
-      let email2 = accountForm.children('input').eq(1).val();
-      let email3 = accountForm.children('input').eq(2).val();
-      let password = accountForm.children('input').eq(3).val();
-      let greeting = accountForm.children('input').eq(4).val();
+      let emails = '';
+      emails += accountForm.children('input').eq(0).val();
+      emails += ',' + accountForm.children('div').eq(0).children('input').eq(0).val();
+      emails += ',' + accountForm.children('input').eq(1).val();
+      debugger
+      let password = accountForm.children('div').eq(1).children('input').eq(0).val();
+      let greeting = accountForm.children('div').eq(2).children('input').eq(0).val();
       let newAccountData = {
-         email_1: email1,
-         email_2: email2,
-         email_3: email3,
+         emails: emails,
          password: password,
          greeting: greeting
       }
+      debugger
       $.ajax({
          // hit account create
          url: "/account/new",
@@ -58,6 +59,13 @@ $(function(){
    });
 
    let logEmIn = function(data){
+      debugger
+      if (data.email) {
+
+      } else if (data.emails.indexOf(',' != -1)) {
+         data['email'] = data.emails.split(',')[0]
+         debugger
+      }
       $.ajax({
          // log em in
          url: "/account/authenticate",
@@ -77,10 +85,23 @@ $(function(){
       })
    }
 
+   let logEmOut = function(){
+      debugger
+      if (localStorage.token) {
+
+      }
+      goHome()
+   }
+
+   let goHome = function(){
+      console.log('clear all the things and gtf home!');
+   }
+
    let showActions = function(info){
       console.log('show the add guests screen');
    }
 
    accountForm.detach();
    loginForm.detach();
+   $('.forms').empty();
 })

@@ -5,7 +5,7 @@ let bcrypt = require('bcrypt');
 
 let accountSchema = new mongoose.Schema({
    greeting: String,
-   emails: Array,          // planner/bride/groom
+   emails: String,          // planner/bride/groom
    password: String,
    guests: {
       party: Number,       // id of account

@@ -5,65 +5,42 @@
       <title>PlanThisWeddingFor.me</title>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
       <script src="/js/index.js"></script>
+      <link rel="stylesheet" type="text/css" href="style.css">
    </head>
    <body>
-      <h1>Login to PlanThisWeddingFor.me!</h1>
-      <nav class="top-nav">
-         <ul class="login-signup">
-            <li id="new">Create Account</li>
-            <li id="login">Login to your Account</li>
-         </ul>
-      </nav>
+      <div class="container">
+         <nav class="top-nav">
+            <h1>PlanThisWeddingFor.me</h1>
+            <ul class="login-signup">
+               <li id="new">Create Account</li>
+               <li id="login">Login to your Account</li>
+            </ul>
+         </nav>
 
-      <div id="forms">
-         <div class="new-account form">
-            We only need one email address, but you can enter up to three people to help you plan!
-            <br>
-            <label>Enter email addresses: </label>
-            <br>
-            <input type="text" placeholder="planner@getsit.done"></input>
-            <br>
-            <input type="text" placeholder="brideORgroom@love.com"></input>
-            <br>
-            <input type="text" placeholder="brideORgroom@love.com"></input>
-            <br>
-            <label>Choose a password for your account:</label>
-            <br>
-            <input type="password" placeholder="Password"></input>
-            <br>
-            <br>
-            <label>What should we call you? Ex 'Mr & Mrs. Smith' or 'The Li Party' or... :</label>
-            <br>
-            <input type="text" placeholder="'Chris and Yulia'"></input>
-            <br>
-            <button class="new-account">Submit</button>
-         </div>
-         <div class="login form">
-            <br>
-            <input type="text" placeholder="email address"></input>
-            <br>
-            <input type="password" placeholder="password"></input>
-            <br>
-            <button class="login">Login</button>
+         <div class="forms">
+            <div class="new-account-form">
+                  <input type="text" class="email-input" placeholder="planner@getsit.done"></input>
+               <div>
+                  <label>Enter up to 3 planners: </label>
+                  <input type="text" class="email-input" placeholder="brideORgroom@love.com"></input>
+               </div>
+                  <input type="text" class="email-input" placeholder="brideORgroom@love.com"></input>
+               <div>
+                  <label>Shared password: </label>
+                  <input type="password" placeholder="Password"></input>
+               </div>
+               <div>
+                  <label>Party name:</label>
+                  <input type="text" placeholder="'Party of Li' or 'Chris and Yulia'"></input>
+               </div>
+               <button class="new-account">Submit</button>
+            </div>
+            <div class="login-form">
+               <input type="text" placeholder="email address"></input>
+               <input type="password" placeholder="password"></input>
+               <button class="login">Login</button>
+            </div>
          </div>
       </div>
-
-      <!-- angularize this -->
-      <div class="add-guests">
-         <div class="add-guests-form">
-            <input type="text" placeholder="Name of Guest"></input>
-            <input type="text" placeholder="email address"></input>
-            <button class="save-guest">Login</button>
-         </div>
-         <div class="guest list">
-            <!-- <p class="guest-name"> <span id="rsvp-ed"></span></p> -->
-         </div>
-      </div>
-
-
-      <div class="rsvp">
-         <button class="rsvp">Login</button>
-      </div>
-
    </body>
 </html>

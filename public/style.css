@@ -1,0 +1,154 @@
+@import url(https://fonts.googleapis.com/css?family=Amatic+SC:400,700|Fredericka+the+Great|Dosis:400,200,300,500,600,700,800|Muli:400,300,300italic,400italic|Lato:400,100italic,100,300,300italic,400italic,700,700italic,900,900italic|Advent+Pro:400,700,600,500,300,200,100|Belleza);
+
+/*
+font-family: 'Amatic SC', cursive;
+font-family: 'Dosis', sans-serif;
+*/
+
+/*
+background-image: url(https://hilarychanphotography.files.wordpress.com/2014/05/the-peak-lookout-hong-kong-wedding-venue-location-outdoor-classic-beautiful-flower-arch.jpg);
+background-image: url(http://www.gruberphotographers.com/wp-content/gallery/ellis-island-immigration-museum-wedding/Venue_EllisIsland_003.jpg);
+*/
+
+html {
+    background-image: url(http://wallpaperdesktop.org/wp-content/uploads/2014/10/beautiful-beach-wedding-venues.jpg);
+    background-position-y: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position-x: center;
+    height: 100%;
+}
+
+div, input, nav, header, footer {
+   box-sizing: border-box;
+}
+.forms:empty {
+   display: none;
+}
+
+body {
+   color: rgba(151, 85, 128, 0.82);
+   text-align: center;
+}
+
+.top-nav {
+   width: 500px;
+   padding: 10px;
+   margin: 50px auto;
+   background-color: rgba(255, 255, 255, 0.5);
+   border-radius: 10px;
+}
+
+h1 {
+    font-size: 3em;
+    font-family: 'Amatic SC', cursive;
+    margin: 10px;
+}
+
+ul.login-signup {
+   padding: 0;
+}
+
+.login-signup li {
+    font-family: 'Amatic SC', cursive;
+    font-size: 1.5em;
+    list-style: none;
+    margin: 0;
+    padding-right: 10px;
+    display: inline-block;
+}
+
+li+li {
+    border-left: 2px solid white;
+    padding-left: 9px;
+}
+
+div.forms {
+   font-family: 'Dosis', sans-serif;
+   text-align: right;
+   margin: 20px auto;
+   background-color: rgba(255,255,255,0.7);
+   border-radius: 10px;
+   width: 500px;
+   padding: 20px;
+}
+
+label {
+   font-family: 'Amatic SC', sans-serif;
+   float: left;
+   text-align: right;
+   font-size: 1.5em;
+   line-height: 50px;
+   width: 40%;
+   display: inline-block;
+   background: white; /* For browsers that do not support gradients */
+   background: -webkit-radial-gradient(rgba(255, 255, 255, .9), rgba(255, 255, 255, 0)); /* For Safari 5.1 to 6.0 */
+   background: -o-radial-gradient(rgba(255, 255, 255, .9), rgba(255, 255, 255, 0)); /* For Opera 11.1 to 12.0 */
+   background: -moz-radial-gradient(rgba(255, 255, 255, .9), rgba(255, 255, 255, 0)); /* For Firefox 3.6 to 15 */
+   background: radial-gradient(rgba(255, 255, 255, .9), rgba(255, 255, 255, 0)); /* Standard syntax */
+
+}
+
+input {
+   font-family: 'Dosis', sans-serif;
+   text-align: center;
+   cursor: text;
+   width: 250px;
+   height: 20px;
+   margin: 5px;
+   border: none;
+   padding: 5px;
+   background-color: rgba(151, 85, 128, 0.82);;
+   text-rendering: optimizeLegibility;
+   text-indent: 5px;
+   color: white;
+   display: inline;
+   height: 40px;
+   font-size: 1em;
+}
+button {
+   background: white; /* For browsers that do not support gradients */
+   background: -webkit-linear-gradient(rgba(151, 85, 128, 0.82), rgba(151, 85, 128, 0.62), rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 1)); /* For Safari 5.1 to 6.0 */
+   background: -o-linear-gradient(rgba(151, 85, 128, 0.82), rgba(151, 85, 128, 0.62), rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 1)); /* For Opera 11.1 to 12.0 */
+   background: -moz-linear-gradient(rgba(151, 85, 128, 0.82), rgba(151, 85, 128, 0.62), rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 1)); /* For Firefox 3.6 to 15 */
+   background: linear-gradient(rgba(151, 85, 128, 0.82), rgba(151, 85, 128, 0.62), rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 1)); /* Standard syntax */
+   border: none;
+   width: 100px;
+   height: 40px;
+   font-family: 'Dosis', sans-serif;
+   font-size: 1.5em;
+   color: rgb(124, 84, 111);
+   font-weight: 400;
+   margin: 20px auto;
+   display: block;
+}
+input:focus,
+button:focus {
+    outline: none;
+    box-shadow: inset 0 0 1em rgba(255, 255, 255, 0.77), 0 0 1em rgba(229,203,244,.8);
+}
+::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+   color: rgba(255, 255, 255, 0.5);
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+   color: white;
+   opacity: 1;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+   color: white;
+   opacity: 1;
+}
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+   color: rgba(255, 255, 255, 0.5);
+}
+
+.login-form {
+   text-align: center;
+}
+
+.login-form button {
+   /*position: relative;
+   float: right;*/
+}
+/*background-color: rgba(240, 248, 255, 0.78);
+border-radius: 20px;*/
