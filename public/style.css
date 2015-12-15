@@ -45,11 +45,13 @@ h1 {
     margin: 10px;
 }
 
-ul.login-signup {
+ul.signin-signup,
+ul.verify-signout {
    padding: 0;
 }
 
-.login-signup li {
+.signin-signup li,
+.verify-signout li {
     font-family: 'Amatic SC', cursive;
     font-size: 1.5em;
     list-style: none;
@@ -142,11 +144,11 @@ button:focus {
    color: rgba(255, 255, 255, 0.5);
 }
 
-.login-form {
+.signin-form {
    text-align: center;
 }
 
-.login-form button {
+.signin-form button {
    /*position: relative;
    float: right;*/
 }

@@ -1,29 +1,26 @@
 'use strict'
 $(function(){
 
-   // function allowAccess(ajaxHeader) {
-   //    ajaxHeader.setRequestHeader('x-access-token', localStorage['token']);
-   // }
-   // $.ajax({
-   //    'beforeSend': allowAccess,
-   //    url: '/guests/add',
-   //    method: 'GET'
-   // });
+   function verifyToken(xhr) {
+   	if (localStorage.token) {
+         xhr.setRequestHeader('x-access-token', localStorage.token)
+      }
+   }
 
    let doc = document,
-       loginLinks  = $('ul.login-signup'),
+       signinLinks  = $('ul.signin-signup'),
        accountForm = $('div.new-account-form'),
-       loginForm   = $('div.login-form'),
+       signinForm   = $('div.signin-form'),
        myAccount;
 
-   loginLinks.children().eq(0).click( ()=>{
-      loginForm.detach()
+   signinLinks.children().eq(0).click( ()=>{
+      signinForm.detach()
       $('.forms').append(accountForm)
    })
 
-   loginLinks.children().eq(1).click( ()=>{
+   signinLinks.children().eq(1).click( ()=>{
       accountForm.detach()
-      $('.forms').append(loginForm)
+      $('.forms').append(signinForm)
    })
 
    $('button.new-account').click(function() {
@@ -31,7 +28,6 @@ $(function(){
       emails += accountForm.children('input').eq(0).val();
       emails += ',' + accountForm.children('div').eq(0).children('input').eq(0).val();
       emails += ',' + accountForm.children('input').eq(1).val();
-      debugger
       let password = accountForm.children('div').eq(1).children('input').eq(0).val();
       let greeting = accountForm.children('div').eq(2).children('input').eq(0).val();
       let newAccountData = {
@@ -39,7 +35,6 @@ $(function(){
          password: password,
          greeting: greeting
       }
-      debugger
       $.ajax({
          // hit account create
          url: "/account/new",
@@ -47,62 +42,70 @@ $(function(){
          data: newAccountData
       }).done(logEmIn(newAccountData)); // log em in
    });
-   $('button.login').click(function() {
-      let email = loginForm.children('input').eq(0).val();
-      let password = loginForm.children('input').eq(1).val();
-
-      let loginData = {
-         email: email,
-         password: password
-      }
-      logEmIn(loginData); // log em in
+   $('button.signin').click(function() {
+      logEmIn({
+         email: signinForm.children('input').eq(0).val(),
+         password: signinForm.children('input').eq(1).val()
+      }); // log em in
    });
 
    let logEmIn = function(data){
-      debugger
-      if (data.email) {
-
-      } else if (data.emails.indexOf(',' != -1)) {
+      if (!data.email && data.emails.indexOf(',' != -1)) {
          data['email'] = data.emails.split(',')[0]
-         debugger
       }
       $.ajax({
          // log em in
          url: "/account/authenticate",
          method: "POST",
          data: data
-      }).done((json)=> {
-         debugger
-         // localStorage is kind of everything
-         console.log('index line 77; ajax done:',json);
-         myAccount = json.account['_id'];
-         console.log('index line 79; json.account_id',myAccount);
-         console.log('index line 80;json token:',json.token);
-         localStorage.setItem('token',json.token); // error here
-         console.log('index line 82; token: ' + localStorage['token']);
-         // show the next step
-         showActions(data)
-         debugger
+      }).done((signinData)=> {
+         showActions(signinData)
       })
    }
 
-   let logEmOut = function(){
-      debugger
-      if (localStorage.token) {
+   let showActions = function(data){
+      //
+      myAccount = data.account[0]._id;
+      localStorage.setItem('token',data.token);
 
+      signinLinks.detach();
+      $('.forms').empty();
+      drawLogout(data.account[0])
+   }
+
+   let drawLogout = function(data){
+      let logoutLinks = $('<ul>')
+      logoutLinks.addClass('verify-signout')
+      logoutLinks.appendTo('.top-nav');
+
+      // display account greeting
+      let loggedInLi = $('<li>')
+      loggedInLi.text('Welcome Back ' + data.greeting).attr('id','who') + '!';
+      // add link to profile info?
+      loggedInLi.appendTo(logoutLinks)
+
+      let logoutButt = $('<li>')
+      logoutButt.click(() => {
+         logEmOut()
+      })
+      logoutButt.text('Logout').attr('id','logout')
+      logoutButt.appendTo(logoutLinks)
+   }
+
+   let logEmOut = function(){
+      if (localStorage.token) {
+         localStorage.token = "";
+         console.log('logged out');
+         myAccount = '';
       }
       goHome()
    }
 
    let goHome = function(){
-      console.log('clear all the things and gtf home!');
-   }
-
-   let showActions = function(info){
-      console.log('show the add guests screen');
+      location.reload()
    }
 
    accountForm.detach();
-   loginForm.detach();
+   signinForm.detach();
    $('.forms').empty();
 })

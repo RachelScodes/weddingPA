@@ -8,6 +8,9 @@ const express    = require('express'),
       mongoose   = require('mongoose'),
       bodyParser = require('body-parser');
 
+// i don't know how to implement this:
+const secret    = process.env.SECRET;
+
 // start express
 const app = express();
 
