@@ -30,35 +30,22 @@ router.post('/authenticate', (req, res) => {
    account.accountLogin(req, res);
 });
 
-router.post('/new', (req, res) => {
-   console.log('hit POST \'/new\'',req.body);
-   res.json( account.newAccount(req.body) )
-});
 
-// // route middleware to verify token
-// router.use((req, res, next) => {
-//   let token = req.headers['x-access-token'];
-//
-//   if(token) {
-//     jwt.verify(token, app.get('secret'), (err, decoded) => {
-//
-//       if(err) {
-//         return res.json({
-//             success: false,
-//             message: 'Failed to authenticate token'
-//         });
-//       } else {
-//         req.decoded = decoded;
-//         next();
-//       }
-//     });
-//   } else {
-//     return res.status(403).send({
-//       success: false,
-//       message: 'No token provided.'
-//     });
-//   }
-// });
+/////////////////////////////////
+//////////// TO DO //////////////
+/////////////////////////////////
+
+// edit guest list
+
+// send emails
+
+// public access via secure link
+// app.get('/guest/:account_id/:guest_id/:timer', function(req,res){
+app.get('/guest/:account_id/:guest_id', function(req,res){
+   console.log('hit get guest form route');
+   // WRITE THIS FUNCTION:
+   // account.findGuest(req.params);
+})
 
 // export
 module.exports = router;
