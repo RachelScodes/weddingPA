@@ -13,17 +13,38 @@ $(function(){
        signinForm   = $('div.signin-form'),
        myAccount;
 
-   signinLinks.children().eq(0).click( ()=>{
+   signinLinks.children('#signup').click( ()=>{
+      event.stopPropagation()
       signinForm.detach()
       $('.forms').append(accountForm)
    })
 
-   signinLinks.children().eq(1).click( ()=>{
+   signinLinks.children('#signin').click( ()=>{
+      event.stopPropagation()
       accountForm.detach()
       $('.forms').append(signinForm)
    })
 
+   signinLinks.children('#about').click( ()=>{
+      event.stopPropagation()
+      if ($('div.information').length > 0) {
+         $('div.information').remove()
+      } else {
+         let aboutDiv = $('<div>')
+         aboutDiv.attr('class','information');
+         aboutDiv.html(
+            '<h1>Weddings are wonderful. Planning them sucks</h1><p>Ever wanted to ask someone to \"Plan this wedding for me?\"<br> That\'s where we come in.</p><button class=\'hide-info\'>Close Window</button>'
+         )
+         aboutDiv.appendTo('.container')
+         aboutDiv.children('button').eq(0).click( ()=>{
+            event.stopPropagation()
+            aboutDiv.remove()
+         })
+      }
+   })
+
    $('button.new-account').click(function() {
+      event.stopPropagation()
       let emails = '';
       emails += accountForm.children('input').eq(0).val();
       emails += ',' + accountForm.children('div').eq(0).children('input').eq(0).val();
@@ -43,6 +64,7 @@ $(function(){
       }).done(logEmIn(newAccountData)); // log em in
    });
    $('button.signin').click(function() {
+      event.stopPropagation()
       logEmIn({
          email: signinForm.children('input').eq(0).val(),
          password: signinForm.children('input').eq(1).val()
@@ -80,16 +102,17 @@ $(function(){
 
       // display account greeting
       let loggedInLi = $('<li>')
-      loggedInLi.text('Welcome Back ' + data.greeting).attr('id','who') + '!';
+      loggedInLi.text('Hello ' + data.greeting + '!').attr('id','who');
       // add link to profile info?
       loggedInLi.appendTo(logoutLinks)
 
       let logoutButt = $('<li>')
       logoutButt.click(() => {
+         event.stopPropagation()
          logEmOut()
       })
       logoutButt.text('Logout').attr('id','logout')
-      logoutButt.appendTo(logoutLinks)
+      logoutButt.appendTo($('<span class="right">')).appendTo(logoutLinks)
    }
 
    let logEmOut = function(){

@@ -65,6 +65,19 @@ li+li {
     padding-left: 9px;
 }
 
+.information {
+   width: 90%;
+   height: 50%;
+   background-color: rgb(124, 84, 111);
+   border-radius: 10px;
+   position: absolute;
+   margin: 0;
+   left: 5%;
+   top: 5%;
+   color: whitesmoke;
+   padding: 5%;
+}
+
 div.forms {
    font-family: 'Dosis', sans-serif;
    text-align: right;
