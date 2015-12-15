@@ -72,13 +72,14 @@ $(function(){
          method: "POST",
          data: data
       }).done((json)=> {
+         debugger
          // localStorage is kind of everything
-         console.log('index line 69; ajax done:',json);
+         console.log('index line 77; ajax done:',json);
          myAccount = json.account['_id'];
-         console.log('index line 71; json.account_id',myAccount);
-         console.log('index line 72;json token:',json.token);
+         console.log('index line 79; json.account_id',myAccount);
+         console.log('index line 80;json token:',json.token);
          localStorage.setItem('token',json.token); // error here
-         console.log('index line 74; token: ' + localStorage['token']);
+         console.log('index line 82; token: ' + localStorage['token']);
          // show the next step
          showActions(data)
          debugger

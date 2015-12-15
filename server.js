@@ -13,7 +13,7 @@ const app = express();
 
 // log all the things
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false}));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(logger('dev'));
 
 // static files

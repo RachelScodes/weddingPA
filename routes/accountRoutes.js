@@ -27,8 +27,12 @@ router.post('/new', (req, res) => {
 
 router.post('/authenticate', (req, res) => {
    console.log('hit POST \'/authenticate\'');
-   let email = req.body.email, password = req.body.password;
-   res.json( account.accountLogin(email,password,'email_1') );
+   account.accountLogin(req, res);
+});
+
+router.post('/new', (req, res) => {
+   console.log('hit POST \'/new\'',req.body);
+   res.json( account.newAccount(req.body) )
 });
 
 // // route middleware to verify token

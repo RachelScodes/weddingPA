@@ -39,42 +39,36 @@ let newAccount = function(data){
 }
 
 
-let accountLogin = function(e,p) {
-   let result = {};
-   // search within emails for email
-   Account.find({"emails": {"$regex": e, "$options": "i"} }, (err, account) => {
-      if(err) throw err;
+let accountLogin = function(request,response) {
+   let password = request.body.password,
+          email = request.body.email;
+
+   // search within 'emails' for the email entered
+   Account.find({"emails": {"$regex": email, "$options": "i"} }, (err, account) => {
+      debugger;
+      if (err) { console.log(err) };
       if(!account) {
-         result = {
-            success: false,
-            message: 'There is no account associated with that email address.\nClick \"Sign up\" to create a profile.'
-         }
-         console.log('accountController line 57',result);
-      } else {
-         // check if password matches
-         account[0].authenticate(p, (err, foundAccount) => {
-            if (err) throw err;
-            if (foundAccount) {
-               let token = jwt.sign(account, app.get('secret'), { expiresIn: 3913 });
-               result = {
-                  account: account,
-                  success: true,
-                  message: 'you can ride the TRAIN with that token!',
-                  token: token
-               };
-               console.log('accountController line 65',result);
-            } else {
-               result = {
-                  success: false,
-                  message: 'Oops, something went wrong with your password.'
-               };
-               console.log('accountController line 71',result);
-            }
-         });
+         // why don't the error messages print?
+         response.status(401).send('There is no account associated with that email address.\nClick \"Sign up\" to create a profile.')
       }
+      // check if password matches
+      account[0].authenticate(password, (err, foundAccount) => {
+         debugger;
+         if (err) { console.log(err) };
+         if (foundAccount) {
+            response.status(200).json({
+               account: account,
+               success: true,
+               message: 'you can ride the TRAIN with that token!',
+               token: jwt.sign(account, app.get('secret'), { expiresIn: 3913 })
+            })
+         } else {
+            // why don't the error messages print?
+            response.status(401).send('Oops, something went wrong with your password.');
+         }
+      });
    });
 }
-
 
 module.exports = {
    accountLogin: accountLogin,
