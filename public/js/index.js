@@ -44,17 +44,7 @@ $(function(){
 
    $('button.new-account').click(function() {
       event.stopPropagation()
-      let emails = '';
-      emails += accountForm.children('input').eq(0).val();
-      emails += ',' + accountForm.children('div').eq(0).children('input').eq(0).val();
-      emails += ',' + accountForm.children('input').eq(1).val();
-      let password = accountForm.children('div').eq(1).children('input').eq(0).val();
-      let greeting = accountForm.children('div').eq(2).children('input').eq(0).val();
-      let newAccountData = {
-         emails: emails,
-         password: password,
-         greeting: greeting
-      }
+      let newAccountData = accountFormCompile();
       $.ajax({
          // hit account create
          url: "/account/signup",
@@ -134,7 +124,57 @@ $(function(){
 
    let editAccount = function(json){
       debugger
-      let deleteButt = $('<button id="delete-account">');
+      let emails = json.emails.split(',')
+      $('.forms').append(accountForm)
+      accountForm.children('input').eq(0).val(emails[0]);
+      accountForm.children('div').eq(0).children('input').eq(0).val(emails[1]);
+      accountForm.children('input').eq(1).val(emails[2]);
+      accountForm.children('div').eq(2).children('input').eq(0).val(json.greeting);
+      accountForm.children('button').remove();
+      drawSaveButt()
+      drawDeleteButt()
+      console.log(json);
+   }
+
+   let drawSaveButt = function(){
+      let saveButt = $('<button>');
+      saveButt.text('Save Changes').attr('id','save-account')
+      saveButt.click( ()=> {
+         event.stopPropagation()
+         let data = accountFormCompile()
+         data['id'] = localStorage.myAccount
+         $.ajax({
+            // log em in
+            url: "/account",
+            method: "PUT",
+            data: data
+         }).done((accountInfo)=> {
+            debugger
+            console.log(accountInfo);
+            logEmIn();
+         })
+      })
+      saveButt.appendTo($('ul.verify-signout'))
+   }
+
+   let accountFormCompile = function(){
+      let emails = '';
+      emails += accountForm.children('input').eq(0).val();
+      emails += ',' + accountForm.children('div').eq(0).children('input').eq(0).val();
+      emails += ',' + accountForm.children('input').eq(1).val();
+      let password = accountForm.children('div').eq(1).children('input').eq(0).val();
+      let greeting = accountForm.children('div').eq(2).children('input').eq(0).val();
+      let accountData = {
+         emails: emails,
+         password: password,
+         greeting: greeting
+      }
+      return accountData
+   }
+
+   let drawDeleteButt = function(){
+      let deleteButt = $('<button>');
+      deleteButt.text('DELETE ACCOUNT').attr('id','delete-account')
       deleteButt.click( ()=> {
          event.stopPropagation()
          let accountId = localStorage.myAccount;
@@ -149,7 +189,6 @@ $(function(){
          })
       })
       deleteButt.appendTo($('ul.verify-signout'))
-      console.log(json);
    }
 
    let logEmOut = function(){

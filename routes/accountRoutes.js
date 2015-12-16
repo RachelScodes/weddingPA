@@ -13,9 +13,11 @@ const secret   = require('../config').secret,
 router
    .post('/signup', (req, res) => {
       console.log('hit POST \'/signup\'',req.body);
-      res.json( account.signup(req.body) )
+      debugger
+      account.signup(req, res);
    })
    .post('/login', (req, res) => {
+      debugger
       console.log('hit POST \'/login\'');
       account.login(req, res);
    });
@@ -28,6 +30,7 @@ router
 // show/edit and delete account
 router
    .get('/search/:accountId', (req, res) => {
+      debugger
       console.log('fetch account');
       account.fetch(req, res);
    })
@@ -37,17 +40,10 @@ router
       account.update(req, res);
    })
    .delete('/', (req, res) => {
+      debugger
       console.log('update account');
       account.destroy(req, res);
    });
-
-// send emails
-// public access via secure link
-// app.get('/guest/:guest_id', function(req,res){
-//    console.log('hit get guest form route');
-//    // WRITE THIS FUNCTION:
-//    // account.findGuest(req.params);
-// })
 
 // export
 module.exports = router;
