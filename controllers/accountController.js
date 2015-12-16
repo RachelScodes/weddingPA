@@ -95,6 +95,7 @@ let deleteGuests = function(request, response){
       if (err) throw err
       else {
          console.log({ "deleted" : guests });
+         response.send()
       }
    })
 }
