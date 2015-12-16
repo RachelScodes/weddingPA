@@ -83,7 +83,6 @@ $(function(){
 
          signinLinks.detach();
          $('.forms').empty();
-         debugger
          if ($('.verify-signout')) {
             $('.verify-signout').remove()
          }
@@ -107,6 +106,7 @@ $(function(){
             let fetchUrl = '/account/search/'+localStorage.myAccount;
             event.stopPropagation()
             $.ajax({
+               'beforeSend': verifyToken,
                url: fetchUrl,
                method: "GET"
             }).done((accountInfo)=> {
@@ -149,7 +149,7 @@ $(function(){
          let updateData = accountFormCompile()
          updateData['id'] = localStorage.myAccount
          $.ajax({
-            // log em in
+            'beforeSend': verifyToken,
             url: "/account",
             method: "PUT",
             data: updateData
@@ -180,11 +180,10 @@ $(function(){
       let deleteButt = $('<button>');
       deleteButt.text('DELETE ACCOUNT').attr('id','delete-account')
       deleteButt.click( ()=> {
-         debugger
          event.stopPropagation()
          let accountId = localStorage.myAccount;
          $.ajax({
-            // log em in
+            'beforeSend': verifyToken,
             url: "/account",
             method: "DELETE",
             data: {'accountId': localStorage.myAccount}
@@ -211,9 +210,11 @@ $(function(){
 
    let drawAddGuests = function(){
       //draw new guest form. angularize
-      let addingDiv = $('<div ng-app="addGuests">')
-      $('.container').append(addingDiv)
-      addingDiv.append('<div class="wrapper" ng-controller="guestsController as new-guests" ui-view>')
+      if (localStorage.token) {
+         $('#angularize').removeClass('hidden')
+      } else {
+         logEmOut()
+      }
    }
 
    accountForm.detach();

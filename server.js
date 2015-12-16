@@ -33,8 +33,6 @@ db.once('open', (callback) => {
   console.log('mongoose connected');
 })
 
-
-
 // controllers
 let home    = require('./routes/homeRoutes');
 let account = require('./routes/accountRoutes');

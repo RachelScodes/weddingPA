@@ -3,13 +3,10 @@
 //require modules and files
 const secret   = require('../config').secret,
       router   = require('express').Router(),
-      account  = require('../controllers/accountController.js'),
-      eJwt     = require('express-jwt');
+      jwt      = require('jsonwebtoken'),
+      account  = require('../controllers/accountController.js');
 
-// initialize app constants
-// const app      = express();
-//       app.set('secret', secret);
-
+// public
 router
    .post('/signup', (req, res) => {
       console.log('hit POST \'/signup\'',req.body);
@@ -20,12 +17,32 @@ router
       account.login(req, res);
    });
 
+// private
+router.use((req, res, next) => {
+  let token = req.headers['x-access-token'];
 
-/////////////////////////////////
-////// TODO: VERIFY THESE ///////
-/////////////////////////////////
+  if(token) {
+    jwt.verify(token, secret, (err, decoded) => {
 
-// show/edit and delete account
+      if(err) {
+        res.json({
+            success: false,
+            message: 'Failed to authenticate token'
+        });
+      } else {
+        req.decoded = decoded;
+        next();
+      }
+    });
+  } else {
+    res.status(403).send({
+      success: false,
+      message: 'No token provided.'
+    });
+  }
+});
+
+// show/edit/delete account
 router
    .get('/search/:accountId', (req, res) => {
       console.log('fetch account');
@@ -36,7 +53,6 @@ router
       account.update(req, res);
    })
    .delete('/', (req, res) => {
-      debugger
       console.log('update account');
       account.destroy(req, res);
    });
