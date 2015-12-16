@@ -37,7 +37,6 @@ router
       account.update(req, res);
    })
    .delete('/', (req, res) => {
-      debugger
       console.log('update account');
       account.destroy(req, res);
    });

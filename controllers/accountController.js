@@ -80,10 +80,8 @@ let updateAccount = function(request,response){
 }
 
 let kaBLAMO = function(request,response){
-   debugger
    let accountId = request.body.accountId;
    Account.findByIdAndRemove(accountId, (err, account) => {
-      debugger
       if (err) throw err;
       account.remove((err) => {
          response.send({ "deleted" : account });
