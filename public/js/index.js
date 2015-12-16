@@ -102,7 +102,9 @@ $(function(){
       // create account greeting
       let loggedInLi = $('<li>')
           loggedInLi.text('Hello ' + data.greeting + '!').attr('id','who');
-          loggedInLi.click(() => {
+
+      let editLi = $('<li>').text('Edit Account')
+          editLi.click(() => {
             let fetchUrl = '/account/'+localStorage.myAccount;
             event.stopPropagation()
             $.ajax({
@@ -125,6 +127,7 @@ $(function(){
       // add everything to nav bar
       logoutLinks.appendTo('.top-nav')
       loggedInLi.appendTo(logoutLinks)
+      editLi.appendTo(logoutLinks)
       logoutButt.appendTo($('<span class="right">')).appendTo(logoutLinks)
    }
 
@@ -143,7 +146,7 @@ $(function(){
 
    let drawSaveButt = function(){
       let saveButt = $('<button>');
-      saveButt.text('Save Changes').attr('id','save-account')
+      saveButt.text('Save').attr('id','save-account')
       saveButt.click( ()=> {
          event.stopPropagation()
          let updateData = accountFormCompile()
@@ -158,7 +161,7 @@ $(function(){
             logEmIn(updateData);
          })
       })
-      saveButt.appendTo($('ul.verify-signout'))
+      saveButt.appendTo($(accountForm))
    }
 
    let accountFormCompile = function(){
@@ -178,20 +181,31 @@ $(function(){
 
    let drawDeleteButt = function(){
       let deleteButt = $('<button>');
-      deleteButt.text('DELETE ACCOUNT').attr('id','delete-account')
+      deleteButt.text('Delete Account').attr('id','delete-account')
       deleteButt.click( ()=> {
          event.stopPropagation()
-         let accountId = localStorage.myAccount;
-         $.ajax({
-            'beforeSend': verifyToken,
-            url: "/account",
-            method: "DELETE",
-            data: {'accountId': localStorage.myAccount}
-         }).done((accountInfo)=> {
-            console.log(accountInfo);
-            logEmOut();
-         })
+         let proceed =
+            confirm(
+               'This will delete your account completely,'+
+               '\nIncluding all stored guest information. ' +
+               '\n\n IT IS NOT REVERSIBLE! ' +
+               '\n\n Click \'OK\' to proceed or \'Cancel\' to go back.')
+
+         if (proceed == true) {
+            let accountId = localStorage.myAccount;
+            $.ajax({
+               'beforeSend': verifyToken,
+               url: "/account",
+               method: "DELETE",
+               data: {'accountId': localStorage.myAccount}
+            }).done((accountInfo)=> {
+               console.log(accountInfo);
+               alert('Account Deleted. :(')
+               logEmOut();
+            })
+         }
       })
+
       deleteButt.appendTo($('ul.verify-signout'))
    }
 

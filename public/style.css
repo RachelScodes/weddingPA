@@ -128,7 +128,7 @@ button {
    background: -moz-linear-gradient(rgba(151, 85, 128, 0.82), rgba(151, 85, 128, 0.62), rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 1)); /* For Firefox 3.6 to 15 */
    background: linear-gradient(rgba(151, 85, 128, 0.82), rgba(151, 85, 128, 0.62), rgba(255, 255, 255, 0.82), rgba(255, 255, 255, 1)); /* Standard syntax */
    border: none;
-   width: 100px;
+   width: auto;
    height: 40px;
    font-family: 'Dosis', sans-serif;
    font-size: 1.5em;
@@ -136,6 +136,7 @@ button {
    font-weight: 400;
    margin: 20px auto;
    display: block;
+   padding: 0 20px;
 }
 :focus {
     outline: none;

@@ -1,0 +1,14 @@
+<div class="menu-button"></div>
+<div class="add-edit-guest">
+  <form ng-submit="guests.addGuest()">
+    <div class="add-guest">
+      <input type="text" class="guest-input" id="newGuest-name" ng-model="guests.newGuest.fullName" placeholder="Mr. E. Mann">
+      <input type="email" class="guest-input" id="newGuest-email" ng-model="guests.newGuest.email" placeholder="mysteryman@gmail.com">
+      <button class="guest-button" type="submit" ng-click="guests.getGuests()">Add</button>
+      <!-- <button class="guest-button" type="delete" ng-click="guests.destroy()">Update</button> -->
+      <!-- <button class="guest-button" type="delete" ng-click="guests.destroy()">Remove</button> -->
+    </div>
+  </form>
+</div>
+
+<div ui-view="list"></div>

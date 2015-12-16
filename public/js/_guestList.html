@@ -1,0 +1,12 @@
+<div ng-init="guests.getGuests()"></div>
+<div class="guests-container">
+   <div class="guest" ng-repeat="guest in guests.listGuests">
+      <p class="guest-info">{{guest.fullName}}
+         <span class="guest-email">{{guest.email}}</span>
+      </p>
+      <div class="guest-status">
+         <p>Has completed: Save The Date ({{guest.svtd.finished}})</p>
+         <p>Has completed: Wedding RSVP ({{guest.rsvp.finished}})</p>
+      </div>
+   </div>
+</div>
