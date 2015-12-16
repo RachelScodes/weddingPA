@@ -3,6 +3,7 @@
 //require modules and files
 const jwt      = require('jsonwebtoken'),
       secret   = require('../config').secret,
+      Guest  = require('../models/guest.js'),
       Account  = require('../models/account.js');
 
 let newAccount = function(request, response){
@@ -77,11 +78,25 @@ let updateAccount = function(request,response){
 let kaBLAMO = function(request,response){
    let accountId = request.body.accountId;
    Account.findByIdAndRemove(accountId, (err, account) => {
-      if (err) throw err;
-      account.remove((err) => {
-         response.send({ "deleted" : account });
-      });
+      if (err) throw err
+      else {
+         account.remove((err) => {
+            if (err) throw err
+            else {
+               deleteGuests(request, response)
+            }
+         });
+      }
    });
+}
+
+let deleteGuests = function(request, response){
+   Guest.remove({account_id: request.body.accountId}, (err, guests) => {
+      if (err) throw err
+      else {
+         console.log({ "deleted" : guests });
+      }
+   })
 }
 
 let fetch = function(request, response){

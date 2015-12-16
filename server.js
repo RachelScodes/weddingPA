@@ -34,12 +34,12 @@ db.once('open', (callback) => {
 })
 
 // controllers
-let home    = require('./routes/homeRoutes');
 let account = require('./routes/accountRoutes');
+let guest    = require('./routes/guestRoutes');
 
 // routes
-app.use('/', home)
 app.use('/account', account);
+app.use('/guest', guest)
 
 
 

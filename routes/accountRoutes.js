@@ -44,7 +44,7 @@ router.use((req, res, next) => {
 
 // show/edit/delete account
 router
-   .get('/search/:accountId', (req, res) => {
+   .get('/:accountId', (req, res) => {
       console.log('fetch account');
       account.fetch(req, res);
    })

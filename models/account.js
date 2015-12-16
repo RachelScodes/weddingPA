@@ -6,7 +6,11 @@ let mongoose = require('mongoose'),
 let accountSchema = new mongoose.Schema({
    greeting: {type: String, required: true},
    emails: {type: String, required: true, unique: true}, // planner/bride/groom
-   password: {type: String, required: true}
+   password: {type: String, required: true},
+   guests: [{
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Guest'
+   }]
 });
 
 accountSchema.pre('save', function(next){

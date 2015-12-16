@@ -1,5 +1,6 @@
 'use strict'
-let mongoose = require('mongoose'),
+
+let mongoose = require('mongoose');
 
 let guestSchema = new mongoose.Schema({
    // link to id of account
@@ -9,19 +10,32 @@ let guestSchema = new mongoose.Schema({
       required: true
    },
    // have they responded?
-   rsvp: {type: Boolean, default: false},
-   name: String,        // Full name of guest
+   // responded: {type: Boolean, default: false},
+   fullName: String,        // Full name of guest
    email: String,       // guest email
-   contact: {
+   svtd: {
+      finished: {type: Boolean, default: false},
       street_1: String,
       street_2: String,
       apt: String,
       city: String,
       state: String,    //selected from dropdown, will be 2 letters
       zip: String,      // verify 5 digits
-      phone: Number,    // verify 10 digits
+      phone: String,    // verify 10 digits
+      notes: String
       // first_emailed: Date,
       // last_emailed: Date
+   },
+   rsvp: {
+      finished: {type: Boolean, default: false},
+      attending: Boolean,
+      entree: String,   // selected from dropdown,
+      diet: String,
+      plus: Boolean,
+      entreep: Number,
+      dietp: String,
+      song: String,
+      message: String
    }
 })
 

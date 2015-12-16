@@ -103,7 +103,7 @@ $(function(){
       let loggedInLi = $('<li>')
           loggedInLi.text('Hello ' + data.greeting + '!').attr('id','who');
           loggedInLi.click(() => {
-            let fetchUrl = '/account/search/'+localStorage.myAccount;
+            let fetchUrl = '/account/'+localStorage.myAccount;
             event.stopPropagation()
             $.ajax({
                'beforeSend': verifyToken,
