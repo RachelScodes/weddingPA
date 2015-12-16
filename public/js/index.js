@@ -45,12 +45,15 @@ $(function(){
    $('button.new-account').click(function() {
       event.stopPropagation()
       let newAccountData = accountFormCompile();
+      debugger
       $.ajax({
          // hit account create
          url: "/account/signup",
          method: "POST",
          data: newAccountData
-      }).done(logEmIn(newAccountData)); // log em in
+      }).done((successful) => {
+         logEmIn(newAccountData)
+      }); // log em in
    });
    $('button.signin').click(function() {
       event.stopPropagation()
@@ -61,6 +64,7 @@ $(function(){
    });
 
    let logEmIn = function(data){
+      debugger
       if (!data.email && data.emails.indexOf(',' != -1)) {
          data['email'] = data.emails.split(',')[0]
       }
@@ -141,17 +145,17 @@ $(function(){
       saveButt.text('Save Changes').attr('id','save-account')
       saveButt.click( ()=> {
          event.stopPropagation()
-         let data = accountFormCompile()
-         data['id'] = localStorage.myAccount
+         let updateData = accountFormCompile()
+         updateData['id'] = localStorage.myAccount
          $.ajax({
             // log em in
             url: "/account",
             method: "PUT",
-            data: data
+            data: updateData
          }).done((accountInfo)=> {
             debugger
             console.log(accountInfo);
-            logEmIn();
+            logEmIn(updateData);
          })
       })
       saveButt.appendTo($('ul.verify-signout'))

@@ -17,12 +17,8 @@ let newAccount = function(request, response){
       else {
          console.log('saved a new account!');
          // send email to that account here?
-         res.json({
-            success: true,
-            account: account
-         })
+         response.status(200).json(newAccount)
       }
-      return result
    });
 }
 
@@ -58,21 +54,19 @@ let accountLogin = function(request,response) {
 }
 
 let updateAccount = function(request,response){
-   debugger
    let accountData = request.body;
    Account.findById(accountData.id, (err, account) => {
       if (err) throw err;
-      if (!account || !account[0]) {
-         response.status(401).send('There is no account associated with that email address.\nClick \"Sign up\" to create a profile.')
+      debugger
+      if (!account) {
+         response.status(401).send('There is no account associated with that id.')
       } else {
          account.emails = accountData.emails;
          account.greeting = accountData.greeting;
          account.password = accountData.password;
          account.save((err) => {
-            if(err) {
-               console.log('oops!',err);
-               response.send(err)
-            } else {
+            if(err) throw err
+            else {
                console.log('saved a new account!');
                // send email to that account here?
                response.status(200).json(account)
