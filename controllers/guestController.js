@@ -100,7 +100,6 @@ let updateRsvp = function(request,response){
 }
 
 let updateEmail = function(request,response){
-   debugger
    let updateInfo = request.body;
    Guest.findById(updateInfo.id, (err, guest) => {
       if (err) throw err;
@@ -123,7 +122,8 @@ let updateEmail = function(request,response){
 }
 
 let fetchOne = function(request,response){
-   Guest.findById(request.params.accountId, (err, guest) => {
+   let guestId = request.params.accountId
+   Guest.findById(guestId, (err, guest) => {
       if (err) throw err;
       if (!guest) {
          response.status(401).send('There is no guest associated with that id.')
@@ -134,7 +134,6 @@ let fetchOne = function(request,response){
 }
 
 let getAll = function(request,response){
-   debugger
    let account = request.params.id
    let guestList = Guest.find({account_id: account}).sort({fullName: 1});
    guestList.exec((err, guests) => {
@@ -144,7 +143,6 @@ let getAll = function(request,response){
 }
 
 let destroy = function(request,response){
-   debugger
    var guestId = request.params.guestId;
    Guest.remove({_id: id}, function(err) {
       if (err) response.json({message: err + '. Could not delete guest'});

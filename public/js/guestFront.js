@@ -22,39 +22,6 @@ $(function(){
           }); // log em in
        });
 
-
-   // let updateGuestButt = $('button.update-guest');
-   //     updateGuestButt.click(function() {
-   //        event.stopPropagation()
-   //        let updateData = guestFormCompile();
-   //        $.ajax({
-   //          // hit guest create
-   //          url: "/guest/add",
-   //          method: "POST",
-   //          data: newGuestData
-   //        }).done((successful) => {
-   //          showAllGuests();
-   //        }); // log em in
-   //     });
-
-   // let deleteGuestButt = $('button.destroy-guest');
-   //     deleteGuestButt.click( ()=> {
-   //        event.stopPropagation()
-   //        let dataObj = {
-   //           accountId: localStorage.myAccount;
-   //        let guestName = $('.add-edit-guest').children('input').eq(0).val(),
-   //
-   //        $.ajax({
-   //           'beforeSend': verifyToken,
-   //           url: "/guest",
-   //           method: "DELETE",
-   //           data: {'accountId': localStorage.myAccount}
-   //        }).done((guestInfo)=> {
-   //           console.log(guestInfo);
-   //           logEmOut();
-   //        })
-   //    })
-
    let svtdSaveButt = $('button#svtd-submit');
        svtdSaveButt.click(function() {
          event.stopPropagation()
@@ -126,6 +93,8 @@ $(function(){
          fullName: $('.add-edit-guest').children('input').eq(0).val(),
          email: $('.add-edit-guest').children('input').eq(1).val()
       }
+      $('.add-edit-guest').children('input').eq(0).val('')
+      $('.add-edit-guest').children('input').eq(0).val('')
       return guestData
    }
 
@@ -154,8 +123,58 @@ $(function(){
 
    let showAllGuests = function(data){
       console.log('Showing all guests:');
+      let guestDiv = $('#guest-list') ? $('#guest-list') : $('<div id="guest-list">');
+          guestDiv.html('')
+
       for (var i = 0; i < data.length; i++) {
-         console.log([i]+ ': ' + data[i].fullName, data[i].email)
+         let content = $('p')
+             content.attr('class','guest-ind').text([i]+ ': ' + data[i].fullName);
+             let eSpan = $('<span>');
+                 eSpan.attr('class','guest-email').text(data[i].email);
+         drawGuestButtons(content)
+         eSpan.appendTo(content);
+         content.prependTo(guestDiv);
       }
+      guestDiv.appendTo('#angularize')
+   }
+
+   let showEditGuest = function(){
+      console.log('show the edit form here');
+      // let updateData = guestFormCompile();
+      // $.ajax({
+      //   // hit guest create
+      //   url: "/guest/add",
+      //   method: "POST",
+      //   data: newGuestData
+      // }).done((successful) => {
+      //   showAllGuests();
+      // }); // log em in
+   }
+   let drawGuestButtons = function(element) {
+      let updateGuestButt = $('<button>')
+          updateGuestButt.attr('class','update-guest').text('Update');
+          updateGuestButt.click(function() {
+             event.stopPropagation()
+             showEditGuest()
+          });
+
+      // let deleteGuestButt = $('<button>').attr('class','destroy-guest');
+      //     deleteGuestButt.click( ()=> {
+      //        event.stopPropagation()
+      //        let dataObj = {
+      //           accountId: localStorage.myAccount;
+      //        let guestName = $('.add-edit-guest').children('input').eq(0).val(),
+      //
+      //        $.ajax({
+      //           'beforeSend': verifyToken,
+      //           url: "/guest",
+      //           method: "DELETE",
+      //           data: {'accountId': localStorage.myAccount}
+      //        }).done((guestInfo)=> {
+      //           console.log(guestInfo);
+      //           logEmOut();
+      //        })
+      //    })
+
    }
 })
