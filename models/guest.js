@@ -1,10 +1,13 @@
 'use strict'
 let mongoose = require('mongoose'),
-    Account  = require('./account.js');
 
 let guestSchema = new mongoose.Schema({
    // link to id of account
-   account_id: {type: mongoose.Schema.Types.ObjectId, ref: 'Account'},
+   account_id: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Account',
+      required: true
+   },
    // have they responded?
    rsvp: {type: Boolean, default: false},
    name: String,        // Full name of guest
@@ -37,6 +40,11 @@ let guestSchema = new mongoose.Schema({
 //    phone: Number,    // verify 10 digits
 //
 
-RoomSchema.statics.nameIs = function(name,cb) {
-   this.db.model('Room').findOne({ name: new RegExp(name, 'i') },cb);
-}
+// notes form previous app
+// RoomSchema.statics.nameIs = function(name,cb) {
+//    this.db.model('Room').findOne({ name: new RegExp(name, 'i') },cb);
+// }
+
+let Guest = mongoose.model('Guest', guestSchema);
+
+module.exports = Guest;

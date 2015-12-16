@@ -1,15 +1,14 @@
 'use strict'
 
 let mongoose = require('mongoose'),
-    bcrypt   = require('bcrypt'),
-    Guest    = require('./guest.js');
+    bcrypt   = require('bcrypt');
 
 
 let accountSchema = new mongoose.Schema({
    greeting: {type: String, required: true},
    emails: {type: String, required: true, unique: true}, // planner/bride/groom
-   password: {type: String, required: true},
-   guests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Guest' }]
+   password: {type: String, required: true}
+   // ,guests: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Guest' }]
 });
 
 accountSchema.pre('save', function(next){
@@ -17,7 +16,7 @@ accountSchema.pre('save', function(next){
 
    if (!account.isModified('password')) return next();
 
-   bcrypt.genSalt(7, function(err,salt){
+   bcrypt.genSalt(13, function(err,salt){
       if (err) return next(err);
       bcrypt.hash(account.password, salt, function(err, hash){
          if (err) return next(err);
@@ -28,7 +27,7 @@ accountSchema.pre('save', function(next){
    })
 });
 
-accountSchema.methods.authenticate = function( password, callback) {
+accountSchema.methods.login = function( password, callback) {
   bcrypt.compare(password, this.password, function(err, isMatch) {
     callback(null, isMatch);
   });

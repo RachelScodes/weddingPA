@@ -1,0 +1,36 @@
+<header>
+	<h1>There are {{ guests.totalGuests().length }} guests on the list.</h1>
+	<h4>{{ guests.yRsvp().length }} have responded | {{ guests.nRsvp().length }} have not.</h4>
+</header>
+<nav class='tabs'>
+	<a ui-sref-active="active" ui-sref="add-edit">Edit guest list</a>
+	<a ui-sref-active="active" ui-sref="email">Email reminders</a>
+</nav>
+<main>
+   <!-- begin add new guest -->
+   <form class="add-guest" ng-submit="guests.addGuest()">
+      <input class="text-box" type="text" placeholder="Elizabeth Banks" ng-model="guests.name">
+      <input class="text-box" type="text" placeholder="Elizabeth.Banks@gmail.com" ng-model="guests.email">
+      <input type="submit" class="btn btn-add" value="+">
+   </form>
+   <!-- end add new guest -->
+
+   <!-- begin edit guest -->
+   <!-- <form class="edit-guest" ng-submit="guests.addGuest()">
+      <input class="text-box" type="text" placeholder="Elizabeth Banks" ng-model="guests.name">
+      <input class="text-box" type="text" placeholder="Elizabeth.Banks@gmail.com" ng-model="guests.email">
+      <input type="submit" class="btn btn-add" value="+">
+   </form> -->
+   <!-- end edit guest -->
+
+	<!-- begin show all guests -->
+	<section class="guest-list">
+		<ul>
+			<li ng-repeat="guest in guests.totalGuests()">
+				<label for="guest-{{$index}}" ng-class="{rsvp: guest.rsvp}">{{ guest.name }}, {{ guest.email }}</label>
+				<button class="btn btn-delete" ng-click="guests.deleteGuest($index)">Remove Guest</button>
+			</li>
+		</ul>
+	</section>
+	<!-- end show all guests -->
+</main>

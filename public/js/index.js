@@ -10,8 +10,7 @@ $(function(){
    let doc = document,
        signinLinks  = $('ul.signin-signup'),
        accountForm = $('div.new-account-form'),
-       signinForm   = $('div.signin-form'),
-       myAccount;
+       signinForm   = $('div.signin-form');
 
    signinLinks.children('#signup').click( ()=>{
       event.stopPropagation()
@@ -58,7 +57,7 @@ $(function(){
       }
       $.ajax({
          // hit account create
-         url: "/account/new",
+         url: "/account/signup",
          method: "POST",
          data: newAccountData
       }).done(logEmIn(newAccountData)); // log em in
@@ -77,7 +76,7 @@ $(function(){
       }
       $.ajax({
          // log em in
-         url: "/account/authenticate",
+         url: "/account/login",
          method: "POST",
          data: data
       }).done((signinData)=> {
@@ -86,42 +85,78 @@ $(function(){
    }
 
    let showActions = function(data){
-      debugger
-      if (data.account[0]._id) {
-         myAccount = data.account[0]._id;
-         localStorage.setItem('token',data.token);
+      if (data.account._id) {
+         localStorage.setItem('token',data.token)
+         localStorage.setItem('myAccount',data.account._id);
 
          signinLinks.detach();
          $('.forms').empty();
-         drawLogout(data.account[0])
+         drawLogout(data.account)
+         drawAddGuests()
+      } else {
+         console.log('bad token!');
+         // goHome()
       }
    }
 
    let drawLogout = function(data){
+      // draw new navbar options
       let logoutLinks = $('<ul>')
-      logoutLinks.addClass('verify-signout')
-      logoutLinks.appendTo('.top-nav');
+          logoutLinks.addClass('verify-signout')
 
-      // display account greeting
+      // create account greeting
       let loggedInLi = $('<li>')
-      loggedInLi.text('Hello ' + data.greeting + '!').attr('id','who');
-      // add link to profile info?
-      loggedInLi.appendTo(logoutLinks)
+          loggedInLi.text('Hello ' + data.greeting + '!').attr('id','who');
+          loggedInLi.click(() => {
+            let fetchUrl = '/account/search/'+localStorage.myAccount;
+            event.stopPropagation()
+            $.ajax({
+               url: fetchUrl,
+               method: "GET"
+            }).done((accountInfo)=> {
+               editAccount(accountInfo)
+            })
+          })
 
+      // create logout button
       let logoutButt = $('<li>')
-      logoutButt.click(() => {
-         event.stopPropagation()
-         logEmOut()
-      })
-      logoutButt.text('Logout').attr('id','logout')
+          logoutButt.text('Logout').attr('id','logout')
+          logoutButt.click(() => {
+            event.stopPropagation()
+            logEmOut()
+          })
+
+      // add everything to nav bar
+      logoutLinks.appendTo('.top-nav')
+      loggedInLi.appendTo(logoutLinks)
       logoutButt.appendTo($('<span class="right">')).appendTo(logoutLinks)
+   }
+
+   let editAccount = function(json){
+      debugger
+      let deleteButt = $('<button id="delete-account">');
+      deleteButt.click( ()=> {
+         event.stopPropagation()
+         let accountId = localStorage.myAccount;
+         $.ajax({
+            // log em in
+            url: "/account",
+            method: "DELETE",
+            data: {'accountId': localStorage.myAccount}
+         }).done((accountInfo)=> {
+            console.log(accountInfo);
+            logEmOut();
+         })
+      })
+      deleteButt.appendTo($('ul.verify-signout'))
+      console.log(json);
    }
 
    let logEmOut = function(){
       if (localStorage.token) {
          localStorage.token = "";
+         localStorage.myAccount = "";
          console.log('logged out');
-         myAccount = '';
       }
       goHome()
    }
@@ -130,7 +165,15 @@ $(function(){
       location.reload()
    }
 
+   let drawAddGuests = function(){
+      //draw new guest form. angularize
+      let addingDiv = $('<div ng-app="addGuests">')
+      $('.container').append(addingDiv)
+      addingDiv.append('<div class="wrapper" ng-controller="guestsController as new-guests" ui-view>')
+   }
+
    accountForm.detach();
    signinForm.detach();
    $('.forms').empty();
+
 })
