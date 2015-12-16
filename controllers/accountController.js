@@ -23,7 +23,6 @@ let newAccount = function(request, response){
 }
 
 let accountLogin = function(request,response) {
-   debugger
    let password = request.body.password,
           email = request.body.email;
    // search within 'emails' for the email entered
@@ -57,7 +56,6 @@ let updateAccount = function(request,response){
    let accountData = request.body;
    Account.findById(accountData.id, (err, account) => {
       if (err) throw err;
-      debugger
       if (!account) {
          response.status(401).send('There is no account associated with that id.')
       } else {

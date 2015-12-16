@@ -45,7 +45,6 @@ $(function(){
    $('button.new-account').click(function() {
       event.stopPropagation()
       let newAccountData = accountFormCompile();
-      debugger
       $.ajax({
          // hit account create
          url: "/account/signup",
@@ -64,7 +63,6 @@ $(function(){
    });
 
    let logEmIn = function(data){
-      debugger
       if (!data.email && data.emails.indexOf(',' != -1)) {
          data['email'] = data.emails.split(',')[0]
       }
@@ -85,6 +83,10 @@ $(function(){
 
          signinLinks.detach();
          $('.forms').empty();
+         debugger
+         if ($('.verify-signout')) {
+            $('.verify-signout').remove()
+         }
          drawLogout(data.account)
          drawAddGuests()
       } else {
@@ -127,7 +129,6 @@ $(function(){
    }
 
    let editAccount = function(json){
-      debugger
       let emails = json.emails.split(',')
       $('.forms').append(accountForm)
       accountForm.children('input').eq(0).val(emails[0]);
@@ -153,7 +154,6 @@ $(function(){
             method: "PUT",
             data: updateData
          }).done((accountInfo)=> {
-            debugger
             console.log(accountInfo);
             logEmIn(updateData);
          })
@@ -180,6 +180,7 @@ $(function(){
       let deleteButt = $('<button>');
       deleteButt.text('DELETE ACCOUNT').attr('id','delete-account')
       deleteButt.click( ()=> {
+         debugger
          event.stopPropagation()
          let accountId = localStorage.myAccount;
          $.ajax({
@@ -218,5 +219,4 @@ $(function(){
    accountForm.detach();
    signinForm.detach();
    $('.forms').empty();
-
 })

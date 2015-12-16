@@ -13,11 +13,9 @@ const secret   = require('../config').secret,
 router
    .post('/signup', (req, res) => {
       console.log('hit POST \'/signup\'',req.body);
-      debugger
       account.signup(req, res);
    })
    .post('/login', (req, res) => {
-      debugger
       console.log('hit POST \'/login\'');
       account.login(req, res);
    });
@@ -30,12 +28,10 @@ router
 // show/edit and delete account
 router
    .get('/search/:accountId', (req, res) => {
-      debugger
       console.log('fetch account');
       account.fetch(req, res);
    })
    .put('/', (req, res) => {
-      debugger
       console.log('update account');
       account.update(req, res);
    })
