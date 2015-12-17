@@ -100,6 +100,7 @@ let updateRsvp = function(request,response){
 }
 
 let updateEmail = function(request,response){
+   debugger
    let updateInfo = request.body;
    Guest.findById(updateInfo.id, (err, guest) => {
       if (err) throw err;

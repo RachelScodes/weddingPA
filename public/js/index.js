@@ -145,6 +145,7 @@ $(function(){
       accountForm.children('input').eq(1).val(emails[2]);
       accountForm.children('div').eq(2).children('input').eq(0).val(json.greeting);
       accountForm.children('button').remove();
+      accountForm.append($('<div class="actions">'))
       drawSaveButt()
       drawDeleteButt()
       console.log(json);
@@ -167,7 +168,7 @@ $(function(){
             logEmIn(updateData);
          })
       })
-      saveButt.appendTo($(accountForm))
+      saveButt.appendTo($(accountForm).children('div.actions'))
    }
 
    let accountFormCompile = function(){
@@ -212,7 +213,7 @@ $(function(){
          }
       })
 
-      deleteButt.appendTo(accountForm)
+      deleteButt.appendTo($(accountForm).children('div.actions'))
    }
 
    let logEmOut = function(){

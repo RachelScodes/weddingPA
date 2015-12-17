@@ -18,7 +18,7 @@ router
       console.log('fetch guest by id for rsvp');
       guest.fetch(req, res);
    })
-   .get('/svtd/:accountId', (req, res) => {
+   .get('/fetch/:accountId', (req, res) => {
       debugger
       console.log('fetch guest by id for svtd');
       guest.fetch(req, res);

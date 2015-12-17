@@ -102,20 +102,6 @@ $(() =>{
       getAllGuests();
    }
 
-   let editGuest = function(json){
-      debugger
-      // let emails = json.emails.split(',')
-      // $('.forms').append(guestForm)
-      // guestForm.children('input').eq(0).val(emails[0]);
-      // guestForm.children('div').eq(0).children('input').eq(0).val(emails[1]);
-      // guestForm.children('input').eq(1).val(emails[2]);
-      // guestForm.children('div').eq(2).children('input').eq(0).val(json.greeting);
-      // guestForm.children('button').remove();
-      // drawSaveButt()
-      // drawDeleteButt()
-      console.log('edit guest');
-   }
-
    let guestFormCompile = () =>{
       debugger
       let guestData = {
@@ -151,7 +137,7 @@ $(() =>{
       for (var i = 0; i < data.length ; i++) {
          let contentPar = $('<p>')
                .attr('class','guest-ind')
-               .text([i]+ ': ' + data[i].fullName)
+               .text(data[i].fullName)
 
          let eSpan = $('<span>')
                .attr('class','guest-email')
@@ -159,7 +145,7 @@ $(() =>{
                .appendTo(contentPar);
 
          drawGuestButtons(contentPar,data[i]._id)
-         contentPar.prependTo(guestListDiv);
+         contentPar.appendTo(guestListDiv);
       }
       guestListDiv.appendTo('#angularize')
    }
@@ -167,12 +153,12 @@ $(() =>{
    let showEditGuest = () =>{
       console.log('show the edit form here');
       debugger
-      let updateData = guestFormCompile();
+      let guestData = guestFormCompile();
       $.ajax({
         // hit guest create
         url: "/guest/add",
         method: "POST",
-        data: updateData
+        data: guestData
       }).done((successful) => {
         showAllGuests();
       }); // log em in
@@ -188,7 +174,7 @@ $(() =>{
              debugger
              event.stopPropagation()
              let id = $(event.toElement).attr('value')
-             showEditGuest()
+             fetchGuest(id)
           });
 
       let deleteGuestButt = $('<button>')
@@ -215,6 +201,53 @@ $(() =>{
              })
           });
    }
+   let fetchGuest = function(guestId){
+      $.ajax({
+         'beforeSend': verifyToken,
+         url: "/guest/fetch/" + guestId,
+         method: "GET"
+      }).done((guestObj)=> {
+         renderEdit(guestObj,guestId)
+      })
+   }
+   let renderEdit = function(data,id){
+      $('button.create-guest').hide()
+      debugger
+      $('.add-edit-guest').children('input').eq(0).val(data.fullName)
+      $('.add-edit-guest').children('input').eq(1).val(data.email)
+
+      if ($('.add-edit-guest').children('button.updateGuest')) {
+         $('.add-edit-guest').children('button.updateGuest').remove()
+      }
+      let buttUpdate = $('<button>').appendTo('.add-edit-guest')
+         .attr('class','update-guest')
+         .attr('value',id)
+         .text('Update')
+         .click( ()=> {
+            debugger
+            event.stopPropagation()
+            let guestData = guestFormCompile();
+            guestData['id'] = $(event.toElement).attr('value')
+            $.ajax({
+               'beforeSend': verifyToken,
+               url: "/guest/update",
+               method: "PUT",
+               data: guestData
+            }).done((successful) => {
+               latestGuest(successful);
+               $('button.create-guest').show()
+               $('.add-edit-guest').children('button.update-guest').remove()
+            });
+         })
+
+      localStorage.setItem('latestGuest',data._id)
+
+   }
+   let editGuest = function(json){
+      debugger
+
+      console.log('edit guest');
+   }
 
    let showGuestList = function() {
       debugger
@@ -222,7 +255,7 @@ $(() =>{
          let guestDiv = $('<div>').attr('class','add-edit-guest')
              guestDiv.html('<label>Full name of Guest:</label><input type=\"text\" placeholder=\"Mr. E. Mann\"></input><label>Guest email address:</label><input type=\"email\" placeholder=\"mysteryman@gmail.com\"></input>')
 
-         let buttAdd = $('<button>')
+         let buttAdd = $('<button>').appendTo(guestDiv)
             .attr('class','create-guest')
             .text('Add')
             .click( ()=> {
@@ -238,25 +271,7 @@ $(() =>{
                   latestGuest(successful);
                });
             })
-            .appendTo(guestDiv)
 
-         let buttUpdate = $('<button>')
-            .attr('class','update-guest')
-            .text('Update')
-            .click( ()=> {
-               event.stopPropagation()
-               console.log('clicked update guest');
-            })
-            .appendTo(guestDiv)
-
-         let buttRemove = $('<button>')
-            .attr('class','destroy-guest')
-            .text('Remove')
-            .click( ()=> {
-               event.stopPropagation()
-               console.log('clicked remove guest');
-            })
-            .appendTo(guestDiv)
          guestDiv.appendTo($('#angularize'))
       }
       getAllGuests()

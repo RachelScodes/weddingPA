@@ -289,11 +289,14 @@ div#angularize {
 
 #guest-list {
     float: right;
-    width: 50%;
+    width: 60%;
     position: relative;
     top: 25%;
     display: block;
     right: 0;
+    background-color: rgba(151, 85, 128, 0.82);
+    padding: 10px;
+    border-radius: 7px;
 }
 
 p.guest-ind button {
@@ -323,6 +326,10 @@ span.guest-email {
 
 ul.options-menu li {
     display: inline-block;
+    margin-left: 10px;
+    margin-right: 0;
+    padding-left: 20px;
+    padding-right: 10px;
 }
 
 h2 {
@@ -366,13 +373,76 @@ p.guest-ind {
 }
 
 p.guest-ind button {
-    margin: 0;
+    /* margin: 0; */
     margin-left: 10px;
 }
 
 p.guest-ind {
     background-color: rgba(255,255,255,0.5);
     line-height: 30px;
-    padding-left: 20px;
+    padding: 10px 10px 5px 10px;
     margin: 7px 0;
+    padding-top: 5px;
+}
+
+p.guest-ind {
+    text-transform: capitalize;
+}
+
+input[type="text"] {
+    text-transform: capitalize;
+}
+span#who {
+    text-transform: capitalize;
+}
+
+span.guest-email {
+    text-transform: lowercase;
+}
+
+.add-edit-guest button {
+    width: 30%;
+    min-width: 100px;
+    max-width: 75%;
+}
+
+div#angularize {
+    width: 90%;
+}
+
+.new-account-form button {
+    display: inline-block;
+    width: auto;
+    padding-left: 20px;
+    padding-right: 20px;
+    margin-left: 20px;
+    margin-right: 20px;
+}
+
+div.actions {
+   text-align: center;
+}
+
+.options-menu li+li {
+    border-left-style: dotted !important;
+    border-left: 4px white !important;
+}
+
+ul.options-menu {
+    margin-bottom: 20px;
+}
+
+.add-edit-guest {
+    max-width: 40%;
+    min-width: 300px;
+    /* border-right: 4px dotted; */
+    padding-right: 30px;
+}
+
+p.guest-ind button {
+    margin: 3px 0px 0px 10px;
+}
+
+.guest-ind:nth-child(even) {
+    background: rgba(255,255,255,0.7);
 }
