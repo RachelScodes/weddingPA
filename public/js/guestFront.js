@@ -111,6 +111,7 @@ $(function(){
       location.reload()
    }
 
+
    let getAllGuests = function(){
       $.ajax({
          'beforeSend': verifyToken,
