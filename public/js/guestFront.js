@@ -218,6 +218,20 @@ $(() =>{
              let id = $(event.toElement).attr('value')
              fetchGuest(id)
           });
+      let svtdButt = $('<button>')
+           .attr('class','svtd-guest')
+           .text('SVTD')
+           .attr('value',id)
+           .appendTo(container)
+           .click(() => {
+             event.stopPropagation()
+              let guestName = $(event.toElement).eq(0).parent().siblings().eq(0).text()
+              let id = $(event.toElement).attr('value')
+              localStorage.setItem('myGuest',id)
+              localStorage.setItem('tempName',guestName)
+              debugger
+              $('#menu-svtd').click()
+           });
 
       let deleteGuestButt = $('<button>')
           .attr('class','delete-guest')
@@ -326,11 +340,10 @@ $(() =>{
    }
 
    let showSvtdForm = function() {
-
+      debugger
       if ($('div.guest-svtd')) {
          $('div.guest-svtd').empty().remove()
       }
-
       let formDiv = $('<div>').attr('class','guest-svtd')
       $('<h2>')
          .attr('class','svtd-greet')
@@ -348,6 +361,11 @@ $(() =>{
             .attr('placeholder',textFields[i])
             .appendTo(formDiv);
          addBreak(formDiv)
+      }
+      debugger
+      if (localStorage.tempName) {
+         debugger
+         formDiv.children('input').eq(0).val(localStorage.tempName)
       }
 
       let stateDropDown = $('<select>')
@@ -440,10 +458,39 @@ $(() =>{
          .click( (e)=> {
             console.log('clicked',e);
             console.log(this);
-
+            saveTheDate()
          })
 
       formDiv.appendTo($('#angularize'))
+   }
+
+   let saveTheDate = function(){
+      if (localStorage.myGuest) {
+         let guestUpdate = {
+            'fullName': $('.guest-svtd').children('input').eq(0).val() ,
+            'id': localStorage.myGuest ,
+            'street_1': $('.guest-svtd').children('input').eq(1).val() ,
+            'street_2': $('.guest-svtd').children('input').eq(2).val() ,
+            'apt': $('.guest-svtd').children('input').eq(3).val() ,
+            'city': $('.guest-svtd').children('input').eq(4).val() ,
+            'state': $('.guest-svtd').children('select').eq(0).val() ,
+            'zip': $('.guest-svtd').children('input').eq(5).val() ,
+            'phone': $('.guest-svtd').children('input').eq(6).val() ,
+            'notes': $('.guest-svtd').children('textarea').eq(0).val()
+         }
+         $.ajax({
+            // save the date info
+            url: "/guest/svtd",
+            method: "POST",
+            data: guestUpdate
+         }).done((successful) => {
+            localStorage.myGuest = null;
+            latestGuest(successful);
+         });
+      } else {
+         // console.log('this is just an example');
+         // alert('this is just an example')
+      }
    }
 
    let showRsvpForm = function(){

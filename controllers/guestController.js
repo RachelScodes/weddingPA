@@ -6,7 +6,9 @@ const jwt      = require('jsonwebtoken'),
       Guest  = require('../models/guest.js'),
       Account  = require('../models/account.js');
 
+
 let newGuest = function(request, response){
+   // Save a new guest to the correct account
    console.log('inside guest controller line 10');
    if (request.body.myAccount) {
       Account.findById(request.body.myAccount, (err, account) => {
@@ -22,6 +24,7 @@ let newGuest = function(request, response){
 }
 
 let saveGuest = function(request,response) {
+   // Store a new guest with account reference
    let data = request.body
    let newGuest = new Guest({
       account_id: data.myAccount,
