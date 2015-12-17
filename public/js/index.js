@@ -30,15 +30,29 @@ $(function(){
          $('div.information').remove()
       } else {
          let aboutDiv = $('<div>')
-         aboutDiv.attr('class','information');
-         aboutDiv.html(
-            '<h1>Weddings are wonderful. Planning them sucks</h1><p>Ever wanted to ask someone to \"Plan this wedding for me?\"<br> That\'s where we come in.</p><button class=\'hide-info\'>Close Window</button>'
-         )
-         aboutDiv.appendTo('.container')
-         aboutDiv.children('button').eq(0).click( ()=>{
-            event.stopPropagation()
-            aboutDiv.remove()
-         })
+               .attr('class','about')
+               .html('<div class="information">')
+               .appendTo('.container');
+            $('div.information')
+               .html('<h1>Weddings are wonderful. <br>Planning them sucks</h1>')
+               .append('<p>Ever wanted to ask someone to \"Plan this wedding for me?\"<br> That\'s where we come in.</p>')
+               .append(
+                  $('<button>')
+                     .attr('class','hide-info')
+                     .text('Close Window')
+                     .click( ()=>{
+                        debugger
+                        event.stopPropagation()
+                        aboutDiv.remove()
+                     })
+                  );
+
+         debugger
+         // poster="/images/#"
+         let videoEmbed = $('<div>')
+             .attr('class','video')
+             .html('<video controls name="weddings-suck"><source src="images/weddings-suck.m4v" type="video/mp4"></video')
+             .prependTo(aboutDiv);
       }
    })
 

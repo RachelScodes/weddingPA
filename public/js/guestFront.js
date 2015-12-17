@@ -131,10 +131,14 @@ $(() =>{
             .attr('id','guest-list')
             .append(guestListMenu());
 
+      let guests = $('<div>')
+            .attr('class','guests-scroll')
+            .appendTo(guestListDiv)
+
       for (var i = 0; i < data.length ; i++) {
-         let contentPar = $('<p>')
+         let contentPar = $('<div>')
                .attr('class','guest-ind')
-               .text(data[i].fullName)
+               .append($('<p>').text(data[i].fullName))
 
          let eSpan = $('<span>')
                .attr('class','guest-email')
@@ -142,7 +146,7 @@ $(() =>{
                .appendTo(contentPar);
 
          drawGuestButtons(contentPar,data[i]._id)
-         contentPar.appendTo(guestListDiv);
+         contentPar.appendTo(guests);
       }
       guestListDiv.appendTo('#angularize')
    }
@@ -190,11 +194,12 @@ $(() =>{
    }
 
    let drawGuestButtons = function(element,id) {
+      let container = $('<div>').attr('class','guest-list-buttons')
       let updateGuestButt = $('<button>')
           .attr('class','update-guest')
           .text('Update')
           .attr('value',id)
-          .appendTo(element)
+          .appendTo(container)
           .click(() => {
 
              event.stopPropagation()
@@ -206,7 +211,7 @@ $(() =>{
           .attr('class','delete-guest')
           .text('Remove')
           .attr('value',id)
-          .appendTo(element)
+          .appendTo(container)
           .click((event) => {
 
              event.stopPropagation()
@@ -225,6 +230,8 @@ $(() =>{
                 showGuestList()
              })
           });
+
+      container.appendTo(element)
    }
    let fetchGuest = function(guestId){
       $.ajax({
@@ -232,6 +239,9 @@ $(() =>{
          url: "/guest/fetch/" + guestId,
          method: "GET"
       }).done((guestObj)=> {
+         if ($('.add-edit-guest').children('button.update-guest')) {
+            $('.add-edit-guest').children('button.update-guest').remove()
+         }
          renderEdit(guestObj,guestId)
       })
    }
