@@ -44,100 +44,24 @@
             </div>
          </div>
 
-         <div id="angularize" class="hidden" ng-app="addGuests">
-            <div class="wrapper" ng-controller="guestsController as new-guests" ui-view>
-            </div>
-            <div class="add-edit-guest">
-               <label>Full name of Guest:</label>
-               <input type="text" placeholder="Mr. E. Mann"></input>
-               <label>Guest email address:</label>
-               <input type="email" placeholder="mysteryman@gmail.com"></input>
-               <button class="create-guest">Add</button>
-               <!-- <button class="update-guest">Update</button> -->
-               <!-- <button class="destroy-guest">Remove</button> -->
-            </div>
-            <div class="guest-svtd">
-               <!-- You're invited to {{greeting}}'s wedding' -->
-               <p><h2 class="rsvp-greet"></h2>
-               <br>Enter your mailing address:</p>
-               <br><input type="text" placeholder="Name as it should Appear"></input>
-               <br><input type="text" placeholder="Street Line One"></input>
-               <br><input type="text" placeholder="Street Line Two"></input>
-               <br><input type="text" placeholder="Apt/Ste"></input>
-               <br><input type="text" placeholder="City"></input>
-               <br>
-               <select>
-                  <option selected="true" disabled="disabled">Select State:</option>
-                  <option value="AL">Alabama</option>
-               	<option value="AK">Alaska</option>
-               	<option value="AZ">Arizona</option>
-               	<option value="AR">Arkansas</option>
-               	<option value="CA">California</option>
-               	<option value="CO">Colorado</option>
-               	<option value="CT">Connecticut</option>
-               	<option value="DE">Delaware</option>
-               	<option value="DC">District Of Columbia</option>
-               	<option value="FL">Florida</option>
-               	<option value="GA">Georgia</option>
-               	<option value="HI">Hawaii</option>
-               	<option value="ID">Idaho</option>
-               	<option value="IL">Illinois</option>
-               	<option value="IN">Indiana</option>
-               	<option value="IA">Iowa</option>
-               	<option value="KS">Kansas</option>
-               	<option value="KY">Kentucky</option>
-               	<option value="LA">Louisiana</option>
-               	<option value="ME">Maine</option>
-               	<option value="MD">Maryland</option>
-               	<option value="MA">Massachusetts</option>
-               	<option value="MI">Michigan</option>
-               	<option value="MN">Minnesota</option>
-               	<option value="MS">Mississippi</option>
-               	<option value="MO">Missouri</option>
-               	<option value="MT">Montana</option>
-               	<option value="NE">Nebraska</option>
-               	<option value="NV">Nevada</option>
-               	<option value="NH">New Hampshire</option>
-               	<option value="NJ">New Jersey</option>
-               	<option value="NM">New Mexico</option>
-               	<option value="NY">New York</option>
-               	<option value="NC">North Carolina</option>
-               	<option value="ND">North Dakota</option>
-               	<option value="OH">Ohio</option>
-               	<option value="OK">Oklahoma</option>
-               	<option value="OR">Oregon</option>
-               	<option value="PA">Pennsylvania</option>
-               	<option value="RI">Rhode Island</option>
-               	<option value="SC">South Carolina</option>
-               	<option value="SD">South Dakota</option>
-               	<option value="TN">Tennessee</option>
-               	<option value="TX">Texas</option>
-               	<option value="UT">Utah</option>
-               	<option value="VT">Vermont</option>
-               	<option value="VA">Virginia</option>
-               	<option value="WA">Washington</option>
-               	<option value="WV">West Virginia</option>
-               	<option value="WI">Wisconsin</option>
-               	<option value="WY">Wyoming</option>
-                  <option value="AS">American Samoa</option>
-                  <option value="GU">Guam</option>
-                  <option value="MP">Northern Mariana Islands</option>
-                  <option value="PR">Puerto Rico</option>
-                  <option value="UM">United States Minor Outlying Islands</option>
-                  <option value="VI">Virgin Islands</option>
-               </select>
-               <br><input type="text" placeholder="Zipcode"></input>
-               <br><input type="tel" placeholder="Phone Number"></input>
-               <br><textarea name="notes" placeholder="If you have a non-standard address, please enter here"></textarea>
-               <br><button id="svtd-submit">Save your Response</button>
-            </div>
+         <div id="angularize" class="hidden">
+            <h2>What would you like to do?</h2>
+            <ul class="options-menu">
+               <li id="menu-view-guests">View/Update Guest List</li>
+               <!-- <li id="menu-view-vendors">View/Update Vendor List</li> -->
+               <!-- <li id="menu-send-emails">Send reminder emails (Coming Soon)</li> -->
+               <!-- <li id="menu-export-guests">Export Guest List as CSV (Coming Soon)</li> -->
+               <!-- <li id="menu-export-vendors">Export Vendor List as CSV (Coming Soon)</li> -->
+               <li id="menu-svtd">Preview Save the date (Contact Info) Form</li>
+               <li id="menu-rsvp">Preview Wedding RSVP Form</li>
+            </ul>
+         </div>
 
             <!-- <div class="guest-rsvp">
                You're invited to {{greeting}}'s wedding'
                <h2 class="rsvp-greet"></h2>
                <h3 class="rsvp-inst">Please enter your rsvp information below:</h3>
                <input type="text" placeholder="Name as it should Appear"></input>
-
                <label>Will you be attending?</label>
                <input type="radio" name="attending" value="true">Gladly Attending
                <input type="radio" name="attending" value="false">Regretfully Declining
@@ -146,7 +70,6 @@
                <input type="radio" name="attending" value="false">Enthusiastically Responding but won't show up
                <input type="radio" name="attending" value="true">Will not respond but am attending anyway
                <input type="radio" name="attending" value="true">I go where the free food is
-
                <label>Choose an entree:</label>
                <input type="radio" name="entree" value="male">Chicken
                <input type="radio" name="entree" value="male">Fish
@@ -154,13 +77,11 @@
                <input type="radio" name="entree" value="male">Air
                <label>Dietary restrictions:</label>
                <input type="text" placeholder="Kosher/Allergic to vegans"></input>
-
                <select>
                   <option selected="true" disabled="disabled">Plus One?</option>
                   <option value="true">Yes</option>
                	<option value="false">No</option>
                </select>
-
                <label>Your guest's entree:</label>
                <input type="radio" name="entreep" value="male">Chicken
                <input type="radio" name="entreep" value="male">Fish
@@ -168,15 +89,12 @@
                <input type="radio" name="entreep" value="male">Air
                <label>Dietary restrictions:</label>
                <input type="text" placeholder="Kosher/Allergic to vegans"></input>
-
                <label>What song is totes obvi?</label>
                <input type="text" placeholder="Song Title - Artist(You Probably haven't heard of)"></input>
-
                <label>Anything else we should know?</label>
                <br><textarea name="notes" placeholder="Remember, you can always edit this form later"></textarea>
                <button id="rsvp-submit">Save your Response</button>
             </div>
-
             <button class="guest-list"></button>
             <div class="all-guests">
             </div>

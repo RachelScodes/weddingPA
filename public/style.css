@@ -243,3 +243,136 @@ button.hide-info {
 html {
     overflow: hidden;
 }
+
+h2 {
+    font-family: 'Amatic Sc', cursive;
+    font-size: 2em;
+}
+
+ul.options-menu {
+    list-style-type: none;
+    padding: 0px;
+    line-height: 23px;
+    font-family: 'Dosis', sans-serif;
+}
+
+ul.options-menu li:hover {
+    text-decoration: underline;
+    -webkit-text-decoration-color: white;
+    text-decoration-color: white;
+    cursor: pointer;
+}
+
+.signin-signup li:hover, .verify-signout li:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+.no-hover:hover{
+   text-decoration: none !important;
+   cursor: default !important;
+}
+
+nav.top-nav {
+    margin: 50px auto 10px auto;
+}
+
+div#angularize {
+    max-height: 425px;
+    overflow-y: auto;
+}
+
+.add-edit-guest {
+    float: left;
+    position: relative;
+    width: 50%;
+}
+
+#guest-list {
+    float: right;
+    width: 50%;
+    position: relative;
+    top: 25%;
+    display: block;
+    right: 0;
+}
+
+p.guest-ind button {
+    font-size: 1em;
+    width: auto;
+    height: auto;
+    display: inline-block;
+    margin: 5px;
+    border-radius: 5px;
+    float: right;
+    position: relative;
+}
+
+p.guest-ind {
+    text-align: left;
+}
+
+span.guest-email {
+   margin-left: 15px;
+}
+
+.add-edit-guest label {
+    width: auto;
+    text-align: center;
+    float: none;
+}
+
+ul.options-menu li {
+    display: inline-block;
+}
+
+h2 {
+    margin: 10px;
+}
+
+ul.options-menu {
+    border-bottom-style: double;
+    border-top-style: double;
+    padding: 5px;
+    margin: 0;
+}
+
+.add-edit-guest button {
+    display: inline-block;
+    font-size: 1em;
+    width: 78px;
+}
+
+h2 {
+    margin: 10px;
+}
+
+ul.options-menu {
+    border-bottom-style: double;
+    border-top-style: double;
+    padding: 5px;
+    margin: 0;
+}
+
+.add-edit-guest button {
+    display: inline-block;
+    font-size: 1em;
+    width: 78px;
+}
+
+p.guest-ind {
+    height: auto;
+    display: block;
+    box-sizing: border-box;
+}
+
+p.guest-ind button {
+    margin: 0;
+    margin-left: 10px;
+}
+
+p.guest-ind {
+    background-color: rgba(255,255,255,0.5);
+    line-height: 30px;
+    padding-left: 20px;
+    margin: 7px 0;
+}

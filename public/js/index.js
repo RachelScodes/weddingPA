@@ -87,7 +87,7 @@ $(function(){
             $('.verify-signout').remove()
          }
          drawLogout(data.account)
-         drawAddGuests()
+         drawOptionsMenu()
       } else {
          console.log('bad token!');
          // goHome()
@@ -97,24 +97,30 @@ $(function(){
    let drawLogout = function(data){
       // draw new navbar options
       let logoutLinks = $('<ul>')
-          logoutLinks.addClass('verify-signout')
+            .addClass('verify-signout')
 
       // create account greeting
       let loggedInLi = $('<li>')
-          loggedInLi.text('Hello ' + data.greeting + '!').attr('id','who');
+            .attr('class','no-hover')
+            .text('Hello ');
 
-      let editLi = $('<li>').text('Edit Account')
-          editLi.click(() => {
-            let fetchUrl = '/account/'+localStorage.myAccount;
-            event.stopPropagation()
-            $.ajax({
-               'beforeSend': verifyToken,
-               url: fetchUrl,
-               method: "GET"
-            }).done((accountInfo)=> {
-               editAccount(accountInfo)
-            })
-          })
+          $('<span>').attr('id','who')
+            .text(data.greeting)
+            .appendTo(loggedInLi)
+            loggedInLi.append('!');
+
+      let editLi = $('<li>')
+            .text('Edit Account')
+            .click(() => {
+               event.stopPropagation()
+               $.ajax({
+                  'beforeSend': verifyToken,
+                  url: '/account/'+localStorage.myAccount,
+                  method: "GET"
+               }).done((accountInfo)=> {
+                  editAccount(accountInfo)
+               })
+             })
 
       // create logout button
       let logoutButt = $('<li>')
@@ -206,7 +212,7 @@ $(function(){
          }
       })
 
-      deleteButt.appendTo($('ul.verify-signout'))
+      deleteButt.appendTo(accountForm)
    }
 
    let logEmOut = function(){
@@ -222,7 +228,7 @@ $(function(){
       location.reload()
    }
 
-   let drawAddGuests = function(){
+   let drawOptionsMenu = function(){
       //draw new guest form. angularize
       if (localStorage.token) {
          $('#angularize').removeClass('hidden')
@@ -230,7 +236,6 @@ $(function(){
          logEmOut()
       }
    }
-
 
    if (localStorage.myAccount) {
       console.log('you were logged in');
