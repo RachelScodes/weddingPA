@@ -48,6 +48,8 @@ h1 {
 ul.signin-signup,
 ul.verify-signout {
    padding: 0;
+   display: flex;
+   justify-content: center;
 }
 
 .signin-signup li,
@@ -183,7 +185,7 @@ select {
 div#angularize {
     width: 70%;
     margin: 0 auto;
-    background-color: rgba(255,255,255,0.5);
+    background-color: rgba(255,255,255,0.7);
     border-radius: 10px;
     padding: 20px;
 }
@@ -277,14 +279,15 @@ nav.top-nav {
 }
 
 div#angularize {
-    max-height: 425px;
+    max-height: 500px;
     overflow-y: auto;
 }
 
 .add-edit-guest {
-    float: left;
+    /* float: left; */
     position: relative;
     width: 50%;
+    display: inline-block;
 }
 
 #guest-list {
@@ -297,6 +300,8 @@ div#angularize {
     background-color: rgba(151, 85, 128, 0.82);
     padding: 10px;
     border-radius: 7px;
+    max-height: 300px;
+    overflow: auto;
 }
 
 p.guest-ind button {
@@ -387,6 +392,7 @@ p.guest-ind {
 
 p.guest-ind {
     text-transform: capitalize;
+    font-family: 'dosis', sans-serif;
 }
 
 input[type="text"] {
@@ -420,7 +426,8 @@ div#angularize {
 }
 
 div.actions {
-   text-align: center;
+   display: flex;
+   justify-content: space-between;
 }
 
 .options-menu li+li {
@@ -430,6 +437,8 @@ div.actions {
 
 ul.options-menu {
     margin-bottom: 20px;
+    display: flex;
+    justify-content: space-around;
 }
 
 .add-edit-guest {
@@ -441,8 +450,62 @@ ul.options-menu {
 
 p.guest-ind button {
     margin: 3px 0px 0px 10px;
+    display: inline-grid;
 }
 
 .guest-ind:nth-child(even) {
     background: rgba(255,255,255,0.7);
+}
+
+.actions button {
+    margin-left: 10px;
+}
+
+ul.guest-list-menu {
+    color: whitesmoke;
+    list-style: none;
+    padding-left: 0;
+    border: none;
+}
+
+.guest-list-menu h2 {
+    display: inline-block;
+    width: auto;
+}
+
+.guest-list-menu li {
+    display: inline-block;
+    border-left: none;
+    font-family: 'Dosis', sans-serif;
+    cursor: pointer;
+    padding-left: 0;
+    /* vertical-align: bottom; */
+    /* height: 25px; */
+    /* display: table-cell; */
+}
+
+.guest-list-menu {
+    color: rgba(255,255,255,0.8);
+}
+
+.guest-list-menu ul {
+    display: flex;
+    justify-content: space-around;
+    margin: 0;
+    border-bottom-style: double;
+    border-top-style: double;
+    padding-left: 0;
+    height: 30px;
+    align-items: baseline;
+    overflow: hidden;
+}
+
+.guest-list-menu li {
+    width: 33%;
+    height: 30px;
+}
+
+.guest-list-menu li:hover {
+    background: linear-gradient(rgba(0, 0, 0, 0), rgba(151, 85, 128, 0.62));
+    border-radius: 0 5px 0 0;
 }

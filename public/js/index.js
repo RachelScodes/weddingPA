@@ -140,15 +140,31 @@ $(function(){
    let editAccount = function(json){
       let emails = json.emails.split(',')
       $('.forms').append(accountForm)
+      $('#angularize').hide()
+
       accountForm.children('input').eq(0).val(emails[0]);
       accountForm.children('div').eq(0).children('input').eq(0).val(emails[1]);
       accountForm.children('input').eq(1).val(emails[2]);
       accountForm.children('div').eq(2).children('input').eq(0).val(json.greeting);
       accountForm.children('button').remove();
-      accountForm.append($('<div class="actions">'))
+      $('div.actions').empty()
+
+      drawBackButt()
       drawSaveButt()
       drawDeleteButt()
       console.log(json);
+   }
+
+   let drawBackButt = function(){
+      let backButt = $('<button>');
+      backButt.text('Close').attr('id','back-account')
+      backButt.click( ()=> {
+         debugger
+         event.stopPropagation()
+         $('.forms').empty();
+         $('#angularize').show()
+      })
+      backButt.appendTo($(accountForm).children('div.actions'))
    }
 
    let drawSaveButt = function(){

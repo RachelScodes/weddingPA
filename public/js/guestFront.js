@@ -97,13 +97,11 @@ $(() =>{
    // }
 
    let latestGuest = function(data){
-      debugger
       localStorage.setItem('latestGuest',data._id)
       getAllGuests();
    }
 
    let guestFormCompile = () =>{
-      debugger
       let guestData = {
          myAccount: localStorage.myAccount,
          fullName: $('.add-edit-guest').children('input').eq(0).val(),
@@ -118,7 +116,6 @@ $(() =>{
       if ($('#guest-list')) {
          $('#guest-list').remove()
       }
-      debugger
       $.ajax({
          'beforeSend': verifyToken,
          url: "/guest/all/" + localStorage.myAccount,
@@ -129,10 +126,10 @@ $(() =>{
    }
 
    let showAllGuests = function(data){
-      debugger
       console.log('Showing all guests:');
       let guestListDiv = $('<div>')
-            .attr('id','guest-list');
+            .attr('id','guest-list')
+            .append(guestListMenu());
 
       for (var i = 0; i < data.length ; i++) {
          let contentPar = $('<p>')
@@ -150,9 +147,37 @@ $(() =>{
       guestListDiv.appendTo('#angularize')
    }
 
+   let guestListMenu = function(){
+      let actions = $('<div>')
+         .attr('class','guest-list-menu')
+         .append('<h2>Guest List:</h2>')
+         .append($('<ul>'))
+
+      $('<li>')
+         .text('Done 💁')
+         .appendTo(actions.children('ul'))
+         .click( ()=> {
+            console.log('mongo query for rsvp and svtd finished true');
+         })
+
+      $('<li>')
+         .text('No Contact Info')
+         .appendTo(actions.children('ul'))
+         .click( ()=> {
+            console.log('mongo query for svtd finished false');
+         })
+
+      $('<li>')
+         .text('No RSVP Info')
+         .appendTo(actions.children('ul'))
+         .click( ()=> {
+            console.log('mongo query for rsvp finished false');
+         })
+      return actions
+   }
+
    let showEditGuest = () =>{
       console.log('show the edit form here');
-      debugger
       let guestData = guestFormCompile();
       $.ajax({
         // hit guest create
@@ -171,7 +196,7 @@ $(() =>{
           .attr('value',id)
           .appendTo(element)
           .click(() => {
-             debugger
+
              event.stopPropagation()
              let id = $(event.toElement).attr('value')
              fetchGuest(id)
@@ -183,7 +208,7 @@ $(() =>{
           .attr('value',id)
           .appendTo(element)
           .click((event) => {
-             debugger
+
              event.stopPropagation()
              console.log('run delete action');
              let dataObj = {
@@ -212,7 +237,6 @@ $(() =>{
    }
    let renderEdit = function(data,id){
       $('button.create-guest').hide()
-      debugger
       $('.add-edit-guest').children('input').eq(0).val(data.fullName)
       $('.add-edit-guest').children('input').eq(1).val(data.email)
 
@@ -224,7 +248,7 @@ $(() =>{
          .attr('value',id)
          .text('Update')
          .click( ()=> {
-            debugger
+
             event.stopPropagation()
             let guestData = guestFormCompile();
             guestData['id'] = $(event.toElement).attr('value')
@@ -244,13 +268,11 @@ $(() =>{
 
    }
    let editGuest = function(json){
-      debugger
 
       console.log('edit guest');
    }
 
    let showGuestList = function() {
-      debugger
       if ($('div.add-edit-guest').length == 0) {
          let guestDiv = $('<div>').attr('class','add-edit-guest')
              guestDiv.html('<label>Full name of Guest:</label><input type=\"text\" placeholder=\"Mr. E. Mann\"></input><label>Guest email address:</label><input type=\"email\" placeholder=\"mysteryman@gmail.com\"></input>')
@@ -259,7 +281,7 @@ $(() =>{
             .attr('class','create-guest')
             .text('Add')
             .click( ()=> {
-               debugger
+
                event.stopPropagation()
                let newGuestData = guestFormCompile();
                $.ajax({
@@ -394,7 +416,7 @@ $(() =>{
          .click( (e)=> {
             console.log('clicked',e);
             console.log(this);
-            debugger
+
          })
 
       formDiv.appendTo($('#angularize'))

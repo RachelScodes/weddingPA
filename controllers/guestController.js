@@ -100,7 +100,6 @@ let updateRsvp = function(request,response){
 }
 
 let updateEmail = function(request,response){
-   debugger
    let updateInfo = request.body;
    Guest.findById(updateInfo.id, (err, guest) => {
       if (err) throw err;
@@ -144,10 +143,8 @@ let getAll = function(request,response){
 }
 
 let destroy = function(request,response){
-   debugger
    var guestId = request.body.guestId;
    Guest.remove({_id: guestId}, function(err) {
-      debugger
       if (err) response.json({message: err + '. Could not delete guest'});
       else response.json({message: 'guest deleted'})
    });
