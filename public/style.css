@@ -207,7 +207,8 @@ select {
    color: rgba(255, 255, 255, 0.5);
 }
 
-button#svtd-submit {
+button#svtd-submit,
+button#rsvp-submit {
     width: auto;
     padding: 10px 15px;
     height: auto;
@@ -283,7 +284,7 @@ nav.top-nav {
 }
 
 div#angularize {
-    max-height: 500px;
+    max-height: 520px;
     overflow-y: auto;
 }
 
@@ -424,6 +425,7 @@ span.guest-email {
 
 div#angularize {
     width: 90%;
+    max-width: 900px;
 }
 
 .new-account-form button {
@@ -546,4 +548,50 @@ video {
 
 p {
    font-family: 'Dosis', sans-serif;
+}
+
+.guest-svtd select,
+.guest-rsvp select {
+    width: 100px;
+}
+
+.attending-radios label {
+    width: 100%;
+    text-align: center;
+}
+
+.attending-radios {
+    text-align: center;
+}
+
+input[type="radio"] {
+    width: 30px;
+}
+
+.guest-rsvp {
+    font-family: 'Dosis',sans-serif;
+    text-align: right;
+    max-width: 80%;
+    margin: 0 auto;
+}
+
+.guest-rsvp select {
+    width: 250px;
+    text-align: center;
+    display: block;
+    margin-left: 52.5%;
+}
+
+h2.rsvp-greet {
+    text-align: center;
+}
+
+.guest-rsvp p {
+    text-align: center;
+}
+
+.guest-rsvp div {
+    margin-right: 10%;
+    margin-top: 10px;
+    border-bottom: 1px dotted;
 }
