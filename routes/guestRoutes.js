@@ -28,6 +28,7 @@ router
       guest.rsvp(req, res);
    })
    .put('/svtd', (req, res) => {
+      debugger
       console.log('update guest svtd');
       guest.svtd(req, res);
    })

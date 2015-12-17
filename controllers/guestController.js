@@ -42,8 +42,8 @@ let saveGuest = function(request,response) {
 
 let updateSvtd = function(request,response){
    debugger
-   let contactInfo = request.body;
-   Guest.findById(contactInfo.id, (err, guest) => {
+   let guestData = request.body;
+   Guest.findById(guestData.id, (err, guest) => {
       if (err) throw err;
       if (!guest) {
          response.status(401).send('There is no guest associated with that id.')

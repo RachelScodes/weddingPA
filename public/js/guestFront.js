@@ -14,6 +14,7 @@ $(() =>{
       $('.guest-rsvp').hide()
       $('div#guest-list').show()
       event.stopPropagation()
+      localStorage.removeItem('tempName')
       console.log('show guest add edit view');
       showGuestList()
    })
@@ -109,6 +110,9 @@ $(() =>{
    // }
 
    let latestGuest = function(data){
+      if ($('.guest-svtd')) {
+         $('.guest-svtd').remove()
+      }
       localStorage.setItem('latestGuest',data._id)
       getAllGuests();
    }
@@ -362,11 +366,6 @@ $(() =>{
             .appendTo(formDiv);
          addBreak(formDiv)
       }
-      debugger
-      if (localStorage.tempName) {
-         debugger
-         formDiv.children('input').eq(0).val(localStorage.tempName)
-      }
 
       let stateDropDown = $('<select>')
             .insertBefore(formDiv.children().eq(-2))
@@ -451,7 +450,7 @@ $(() =>{
          .attr('placeholder','If you have a non-standard address, please enter here');
 
       addBreak(formDiv)
-      $('<button>')
+      let submitButt = $('<button>')
          .appendTo(formDiv)
          .attr('id','svtd-submit')
          .text('Save Your Response')
@@ -461,10 +460,20 @@ $(() =>{
             saveTheDate()
          })
 
+         debugger
+         if (localStorage.tempName) {
+            debugger
+            formDiv.children('input').eq(0).val(localStorage.tempName)
+            submitButt.attr('value',localStorage.myGuest)
+         } else if (localStorage.myGuest) {
+            localStorage.removeItem('myGuest')
+         }
+
       formDiv.appendTo($('#angularize'))
    }
 
    let saveTheDate = function(){
+      debugger
       if (localStorage.myGuest) {
          let guestUpdate = {
             'fullName': $('.guest-svtd').children('input').eq(0).val() ,
@@ -481,16 +490,18 @@ $(() =>{
          $.ajax({
             // save the date info
             url: "/guest/svtd",
-            method: "POST",
+            method: "PUT",
             data: guestUpdate
          }).done((successful) => {
-            localStorage.myGuest = null;
+            localStorage.removeItem(myGuest);
+            localStorage.removeItem(tempName);
             latestGuest(successful);
          });
       } else {
          // console.log('this is just an example');
-         // alert('this is just an example')
+         alert('this is just an example')
       }
+
    }
 
    let showRsvpForm = function(){
