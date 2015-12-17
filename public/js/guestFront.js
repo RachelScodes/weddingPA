@@ -94,7 +94,7 @@ $(function(){
          email: $('.add-edit-guest').children('input').eq(1).val()
       }
       $('.add-edit-guest').children('input').eq(0).val('')
-      $('.add-edit-guest').children('input').eq(0).val('')
+      $('.add-edit-guest').children('input').eq(1).val('')
       return guestData
    }
 
@@ -124,16 +124,16 @@ $(function(){
    let showAllGuests = function(data){
       console.log('Showing all guests:');
       let guestDiv = $('#guest-list') ? $('#guest-list') : $('<div id="guest-list">');
-          guestDiv.html('')
+          guestDiv.empty()
 
       for (var i = 0; i < data.length; i++) {
          let content = $('p')
              content.attr('class','guest-ind').text([i]+ ': ' + data[i].fullName);
              let eSpan = $('<span>');
                  eSpan.attr('class','guest-email').text(data[i].email);
-         drawGuestButtons(content)
          eSpan.appendTo(content);
          content.prependTo(guestDiv);
+         drawGuestButtons(content)
       }
       guestDiv.appendTo('#angularize')
    }
@@ -157,6 +157,16 @@ $(function(){
              event.stopPropagation()
              showEditGuest()
           });
+      let deleteGuestButt = $('<button>')
+          deleteGuestButt.attr('class','delete-guest').text('Remove');
+          deleteGuestButt.click(function() {
+             event.stopPropagation()
+             console.log('run delete action');
+            //  showEditGuest()
+          });
+   }
+
+   getAllGuests()
 
       // let deleteGuestButt = $('<button>').attr('class','destroy-guest');
       //     deleteGuestButt.click( ()=> {
@@ -175,6 +185,6 @@ $(function(){
       //           logEmOut();
       //        })
       //    })
+      // }
 
-   }
 })

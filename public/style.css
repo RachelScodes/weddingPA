@@ -224,3 +224,22 @@ textarea {
     background-color: rgba(151, 85, 128, 0.82);
     color: white;
 }
+
+.information {
+    background-color: rgba(31,21,28,0.92);
+    width: 105%;
+    height: 105%;
+    padding: 24% 10%;
+    left: -2%;
+    top: -2%;
+    overflow: hidden;
+}
+
+button.hide-info {
+    width: auto;
+    padding: 0 20px;
+}
+
+html {
+    overflow: hidden;
+}
