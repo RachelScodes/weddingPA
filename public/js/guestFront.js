@@ -158,7 +158,7 @@ $(() =>{
                .text(data[i].email)
                .appendTo(contentPar);
 
-         drawGuestButtons(contentPar)
+         drawGuestButtons(contentPar,data[i]._id)
          contentPar.prependTo(guestListDiv);
       }
       guestListDiv.appendTo('#angularize')
@@ -172,28 +172,47 @@ $(() =>{
         // hit guest create
         url: "/guest/add",
         method: "POST",
-        data: newGuestData
+        data: updateData
       }).done((successful) => {
         showAllGuests();
       }); // log em in
    }
-   let drawGuestButtons = function(element) {
+
+   let drawGuestButtons = function(element,id) {
       let updateGuestButt = $('<button>')
           .attr('class','update-guest')
           .text('Update')
+          .attr('value',id)
           .appendTo(element)
           .click(() => {
+             debugger
              event.stopPropagation()
+             let id = $(event.toElement).attr('value')
              showEditGuest()
           });
+
       let deleteGuestButt = $('<button>')
           .attr('class','delete-guest')
           .text('Remove')
+          .attr('value',id)
           .appendTo(element)
-          .click(() => {
+          .click((event) => {
+             debugger
              event.stopPropagation()
              console.log('run delete action');
-            //  showEditGuest()
+             let dataObj = {
+                guestId: $(event.toElement).attr('value')
+             }
+
+             $.ajax({
+                'beforeSend': verifyToken,
+                url: "/guest",
+                method: "DELETE",
+                data: dataObj
+             }).done((message)=> {
+                console.log(message);
+                showGuestList()
+             })
           });
    }
 
@@ -365,26 +384,6 @@ $(() =>{
 
       formDiv.appendTo($('#angularize'))
    }
-
-
-      // let deleteGuestButt = $('<button>').attr('class','destroy-guest');
-      //     deleteGuestButt.click( ()=> {
-      //        event.stopPropagation()
-      //        let dataObj = {
-      //           accountId: localStorage.myAccount;
-      //        let guestName = $('.add-edit-guest').children('input').eq(0).val(),
-      //
-      //        $.ajax({
-      //           'beforeSend': verifyToken,
-      //           url: "/guest",
-      //           method: "DELETE",
-      //           data: {'accountId': localStorage.myAccount}
-      //        }).done((guestInfo)=> {
-      //           console.log(guestInfo);
-      //           logEmOut();
-      //        })
-      //    })
-      // }
 
    let logEmOut = () =>{
       if (localStorage.token) {

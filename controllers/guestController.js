@@ -143,10 +143,12 @@ let getAll = function(request,response){
 }
 
 let destroy = function(request,response){
-   var guestId = request.params.guestId;
-   Guest.remove({_id: id}, function(err) {
+   debugger
+   var guestId = request.body.guestId;
+   Guest.remove({_id: guestId}, function(err) {
+      debugger
       if (err) response.json({message: err + '. Could not delete guest'});
-      response.json({message: 'guest deleted'})
+      else response.json({message: 'guest deleted'})
    });
 
 }

@@ -46,6 +46,7 @@ router
       guest.create(req, res);
    })
    .delete('/', (req, res) => {
+      debugger
       console.log('delete guest');
       guest.destroy(req, res);
    });
