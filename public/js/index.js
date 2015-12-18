@@ -14,14 +14,29 @@ $(function(){
 
    signinLinks.children('#signup').click( ()=>{
       event.stopPropagation()
-      signinForm.detach()
-      $('.forms').append(accountForm)
+      let showSignUp = function(){
+         signinForm.detach()
+         $('.forms').append(accountForm)
+         accountForm.hide()
+         accountForm.show( "drop", {direction: 'left'}, 1000)
+      }
+      signinForm.hide( "drop", {direction:'right'}, 500, showSignUp)
+      // return false
    })
+
 
    signinLinks.children('#signin').click( ()=>{
       event.stopPropagation()
-      accountForm.detach()
-      $('.forms').append(signinForm)
+      let showSignin = function(){
+         accountForm.detach()
+         $('.forms').append(signinForm)
+         signinForm.hide()
+         signinForm.show( "drop", {direction: 'left'}, 1000)
+      }
+      accountForm.hide( "drop", {direction:'right'}, 500, showSignin)
+
+      // accountForm.detach()
+      // $('.forms').append(signinForm)
    })
 
    signinLinks.children('#about').click( ()=>{
@@ -41,13 +56,13 @@ $(function(){
                      .attr('class','hide-info')
                      .text('Close Window')
                      .click( ()=>{
-                        debugger
                         event.stopPropagation()
-                        aboutDiv.remove()
+                        aboutDiv.fadeOut("slow", ()=>{
+                           aboutDiv.remove()
+                        })
                      })
                   );
 
-         debugger
          // poster="/images/#"
          let videoEmbed = $('<div>')
              .attr('class','video')
@@ -154,6 +169,7 @@ $(function(){
    let editAccount = function(json){
       let emails = json.emails.split(',')
       $('.forms').append(accountForm)
+      accountForm.show( "drop", {direction: 'left'}, 1000)
       $('#angularize').hide()
 
       accountForm.children('input').eq(0).val(emails[0]);
@@ -173,7 +189,6 @@ $(function(){
       let backButt = $('<button>');
       backButt.text('Close').attr('id','back-account')
       backButt.click( ()=> {
-         debugger
          event.stopPropagation()
          $('.forms').empty();
          $('#angularize').show()

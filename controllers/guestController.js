@@ -41,7 +41,6 @@ let saveGuest = function(request,response) {
 }
 
 let updateSvtd = function(request,response){
-   debugger
    let guestData = request.body;
    Guest.findById(guestData.id, (err, guest) => {
       if (err) throw err;
@@ -145,6 +144,44 @@ let getAll = function(request,response){
    })
 }
 
+let querySearch = function(request,response){
+   let account = request.params.id,
+       guestList;
+       debugger
+   switch (request.params.searchTerm) {
+      case 'svtd':
+         guestList = Guest.find({account_id: account, 'svtd.finished':false}).sort({fullName: 1});
+         break;
+      case 'rsvp':
+         guestList = Guest.find({account_id: account, 'rsvp.finished':false}).sort({fullName: 1});
+         break;
+      default:
+         break;
+   }
+   debugger
+   guestList.exec((err, guests) => {
+      if (err) throw err
+      debugger
+      response.json(guests);
+   })
+}
+
+let doneSearch = function(request,response){
+   let account = request.params.id;
+
+   let guestList = Guest.find({
+          account_id: account,
+          'svtd.finished':true,
+          'rsvp.finished':true
+         }).sort({fullName: 1});
+
+   guestList.exec((err, guests) => {
+      if (err) throw err
+      debugger
+      response.json(guests);
+   })
+}
+
 let destroy = function(request,response){
    var guestId = request.body.guestId;
    Guest.remove({_id: guestId}, function(err) {
@@ -164,5 +201,7 @@ module.exports = {
    updateGuest: updateEmail,
    guestList: getAll,
    create: newGuest,
-   destroy: destroy
+   destroy: destroy,
+   querySearch: querySearch,
+   doneSearch: doneSearch
 }

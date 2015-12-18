@@ -14,12 +14,10 @@ router.get('/', (req, res, next) =>{
 // public access
 router
    .get('/rsvp/:accountId', (req, res) => {
-      debugger
       console.log('fetch guest by id for rsvp');
       guest.fetch(req, res);
    })
    .get('/fetch/:accountId', (req, res) => {
-      debugger
       console.log('fetch guest by id for svtd');
       guest.fetch(req, res);
    })
@@ -28,7 +26,6 @@ router
       guest.rsvp(req, res);
    })
    .put('/svtd', (req, res) => {
-      debugger
       console.log('update guest svtd');
       guest.svtd(req, res);
    })
@@ -49,6 +46,12 @@ router
    .delete('/', (req, res) => {
       console.log('delete guest');
       guest.destroy(req, res);
+   })
+   .get('/query/:searchTerm/:id', (req,res) => {
+      guest.querySearch(req,res)
+   })
+   .get('/done/:id', (req,res) => {
+      guest.doneSearch(req,res)
    });
 
 // private

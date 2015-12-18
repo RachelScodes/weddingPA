@@ -177,21 +177,54 @@ $(() =>{
          .text('Done 💁')
          .appendTo(actions.children('ul'))
          .click( ()=> {
-            console.log('mongo query for rsvp and svtd finished true');
+            event.stopPropagation()
+            if ($('#guest-list')) {
+               $('#guest-list').remove()
+            }
+            $.ajax({
+               'beforeSend': verifyToken,
+               url: "/guest/done/" + localStorage.myAccount,
+               method: "GET"
+            }).done((guestList)=> {
+               console.log('DONE mongo query for svtd finished false');
+               showAllGuests(guestList)
+            })
          })
 
       $('<li>')
          .text('No Contact Info')
          .appendTo(actions.children('ul'))
          .click( ()=> {
-            console.log('mongo query for svtd finished false');
+            event.stopPropagation()
+            if ($('#guest-list')) {
+               $('#guest-list').remove()
+            }
+            $.ajax({
+               'beforeSend': verifyToken,
+               url: "/guest/query/svtd/" + localStorage.myAccount,
+               method: "GET"
+            }).done((guestList)=> {
+               console.log('DONE mongo query for rsvp and svtd finished true');
+               showAllGuests(guestList)
+            })
          })
 
       $('<li>')
          .text('No RSVP Info')
          .appendTo(actions.children('ul'))
          .click( ()=> {
-            console.log('mongo query for rsvp finished false');
+            event.stopPropagation()
+            if ($('#guest-list')) {
+               $('#guest-list').remove()
+            }
+            $.ajax({
+               'beforeSend': verifyToken,
+               url: "/guest/query/rsvp/" + localStorage.myAccount,
+               method: "GET"
+            }).done((guestList)=> {
+               console.log('DONE mongo query for rsvp finished false');
+               showAllGuests(guestList)
+            })
          })
       return actions
    }
@@ -233,9 +266,23 @@ $(() =>{
               let id = $(event.toElement).attr('value')
               localStorage.setItem('myGuest',id)
               localStorage.setItem('tempName',guestName)
-              debugger
               $('#menu-svtd').click()
            });
+      let rsvpButt = $('<button>')
+           .attr('class','rsvp-guest')
+           .text('RSVP')
+           .attr('value',id)
+           .appendTo(container)
+           .click(() => {
+             event.stopPropagation()
+              let guestName = $(event.toElement).eq(0).parent().siblings().eq(0).text()
+              let id = $(event.toElement).attr('value')
+              localStorage.setItem('myGuest',id)
+              localStorage.setItem('tempName',guestName)
+              $('#menu-rsvp').click()
+           });
+
+
 
       let deleteGuestButt = $('<button>')
           .attr('class','delete-guest')
@@ -344,7 +391,6 @@ $(() =>{
    }
 
    let showSvtdForm = function() {
-      debugger
       if ($('div.guest-svtd')) {
          $('div.guest-svtd').empty().remove()
       }
@@ -435,8 +481,8 @@ $(() =>{
       for (var i in stateVals) {
          let optionTag = $('<option>')
             .attr('value',i)
-            .text(stateVals[i]);
-         optionTag.appendTo(stateDropDown);
+            .text(stateVals[i])
+            .appendTo(stateDropDown);
       };
 
       addBreak(formDiv)
@@ -455,25 +501,21 @@ $(() =>{
          .attr('id','svtd-submit')
          .text('Save Your Response')
          .click( (e)=> {
-            console.log('clicked',e);
-            console.log(this);
+            event.stopPropagation()
             saveTheDate()
          })
 
-         debugger
-         if (localStorage.tempName) {
-            debugger
-            formDiv.children('input').eq(0).val(localStorage.tempName)
-            submitButt.attr('value',localStorage.myGuest)
-         } else if (localStorage.myGuest) {
-            localStorage.removeItem('myGuest')
-         }
+      if (localStorage.tempName) {
+         formDiv.children('input').eq(0).val(localStorage.tempName)
+         submitButt.attr('value',localStorage.myGuest)
+      } else if (localStorage.myGuest) {
+         localStorage.removeItem('myGuest')
+      }
 
       formDiv.appendTo($('#angularize'))
    }
 
    let saveTheDate = function(){
-      debugger
       if (localStorage.myGuest) {
          let guestUpdate = {
             'fullName': $('.guest-svtd').children('input').eq(0).val() ,
@@ -505,7 +547,6 @@ $(() =>{
    }
 
    let showRsvpForm = function(){
-      debugger
       // $('.guest-rsvp').hide()
 
       if ($('div.guest-rsvp')) {
@@ -609,7 +650,7 @@ $(() =>{
                .attr('placeholder','Song Title - Artist(You Probably haven\'t heard of)'))
          .appendTo(formDiv)
 
-      formDiv.append('<label>Anything else we should know?</label>')
+      formDiv.append('<label id="last">Anything else we should know?</label>')
 
 
       $('<textarea>').appendTo(formDiv)
@@ -617,19 +658,61 @@ $(() =>{
          .attr('placeholder','Remember, you can always edit this form later');
 
       addBreak(formDiv)
-      $('<button>')
+      let submitButt = $('<button>')
          .appendTo(formDiv)
          .attr('id','rsvp-submit')
          .text('Save Your Response')
-         .click( (e)=> {
-            debugger
-            console.log('clicked',e);
-            console.log(this);
+         .click( ()=> {
+            event.stopPropagation()
+            // saveRsvpResponse()
+            alert('this is just an example')
 
          })
 
+      if (localStorage.tempName) {
+         $('.guest-rsvp').children().eq(3).children('input').val(localStorage.tempName)
+         submitButt.attr('value',localStorage.myGuest)
+      } else if (localStorage.myGuest) {
+         localStorage.removeItem('myGuest')
+      }
+
       formDiv.appendTo($('#angularize'))
 
+   }
+
+   let saveRsvpResponse = function(){
+      debugger
+      if (localStorage.myGuest) {
+         let plusOne = function(){
+            return ($('.guest-rsvp').children('select').eq(0).val == "true") ? true : false;
+         }
+         let guestUpdate = {
+            'id': localStorage.myGuest ,
+            'fullName': $('.guest-rsvp').children().eq(3).children('input').val() ,
+            'attending': $('input[name=attending]:checked').val() ,
+            'entree': $('input[name=entree]:checked').val() ,
+            'diet': $('.guest-rsvp').children().eq(5).children('input').val() ,
+            'plus': plusOne() ,
+            'entreep': $('input[name=entreep]:checked').val() ,
+            'dietp': $('.guest-rsvp').children().eq(8).children('input').eq(0).val() ,
+            'song': $('.guest-rsvp').children().eq(9).children('input').eq(0).val() ,
+            'message': $('.guest-rsvp').children('textarea').eq(0).val()
+         }
+         debugger
+         $.ajax({
+            // save the date info
+            url: "/guest/rsvp",
+            method: "PUT",
+            data: guestUpdate
+         }).done((successful) => {
+            localStorage.removeItem(myGuest);
+            localStorage.removeItem(tempName);
+            latestGuest(successful);
+         });
+      } else {
+         // console.log('this is just an example');
+         alert('this is just an example')
+      }
    }
 
    // let inputFactory = function(elementType,object,attrArray){}
