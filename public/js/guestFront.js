@@ -75,14 +75,36 @@ $(() =>{
        });
 
    let guestFormCompile = () =>{
-      let guestData = {
-         myAccount: localStorage.myAccount,
-         fullName: $('.add-edit-guest').children('input').eq(0).val(),
-         email: $('.add-edit-guest').children('input').eq(1).val()
+
+      let regEmail = /.+@.+\..+/i,
+          email = $('.add-edit-guest').children('input').eq(1).val(),
+          fullName = $('.add-edit-guest').children('input').eq(0).val(),
+          guestData = {
+             alerts: []
+          };
+
+      if (fullName == '') {
+         guestData['alerts'].push('Name can\'t be blank')
       }
-      $('.add-edit-guest').children('input').eq(0).val('')
-      $('.add-edit-guest').children('input').eq(1).val('')
-      return guestData
+      if (email == '') {
+         guestData['alerts'].push('Email can\'t be blank')
+      } else if (!regEmail.test(email)) {
+         guestData['alerts'].push('Invalid email')
+      }
+
+      if (guestData.alerts.length > 0) {
+         alert('\n'+guestData.alerts.join('\n\n'))
+         return false
+      } else {
+         let guestData = {
+            myAccount: localStorage.myAccount,
+            fullName: fullName,
+            email: email
+         }
+         $('.add-edit-guest').children('input').eq(0).val('')
+         $('.add-edit-guest').children('input').eq(1).val('')
+         return guestData
+      }
    }
 
    let getAllGuests = () =>{
@@ -209,14 +231,16 @@ $(() =>{
    let showEditGuest = () =>{
       console.log('show the edit form here');
       let guestData = guestFormCompile();
-      $.ajax({
-        // hit guest create
-        url: "/guest/add",
-        method: "POST",
-        data: guestData
-      }).done((successful) => {
-        showAllGuests(successful);
-      }); // log em in
+      if (guestData){
+         $.ajax({
+           // hit guest create
+           url: "/guest/add",
+           method: "POST",
+           data: guestData
+         }).done((successful) => {
+           showAllGuests(successful);
+         }); // log em in
+      }
    }
 
    let drawGuestButtons = function(element,id) {
@@ -316,17 +340,19 @@ $(() =>{
 
             event.stopPropagation()
             let guestData = guestFormCompile();
-            guestData['id'] = $(event.toElement).attr('value')
-            $.ajax({
-               'beforeSend': verifyToken,
-               url: "/guest/update",
-               method: "PUT",
-               data: guestData
-            }).done((successful) => {
-               $('button.create-guest').show()
-               $('.add-edit-guest').children('button.update-guest').remove()
-               showGuestList()
-            });
+            if (guestData) {
+               guestData['id'] = $(event.toElement).attr('value')
+               $.ajax({
+                  'beforeSend': verifyToken,
+                  url: "/guest/update",
+                  method: "PUT",
+                  data: guestData
+               }).done((successful) => {
+                  $('button.create-guest').show()
+                  $('.add-edit-guest').children('button.update-guest').remove()
+                  showGuestList()
+               });
+            }
          })
       showGuestList()
    }
@@ -350,14 +376,16 @@ $(() =>{
 
                event.stopPropagation()
                let newGuestData = guestFormCompile();
-               $.ajax({
-                  'beforeSend': verifyToken,
-                  url: "/guest/add",
-                  method: "POST",
-                  data: newGuestData
-               }).done((successful) => {
-                  showAllGuests();
-               });
+               if (newGuestData) {
+                  $.ajax({
+                     'beforeSend': verifyToken,
+                     url: "/guest/add",
+                     method: "POST",
+                     data: newGuestData
+                  }).done((successful) => {
+                     showAllGuests();
+                  });
+               }
             })
 
          guestDiv.appendTo($('#angularize'))
