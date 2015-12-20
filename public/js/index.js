@@ -12,6 +12,7 @@ $(function(){
        accountForm = $('div.new-account-form'),
        signinForm   = $('div.signin-form');
 
+   // assign click events
    signinLinks.children('#signup').click( ()=>{
       event.stopPropagation()
       let showSignUp = function(){
@@ -21,9 +22,7 @@ $(function(){
          accountForm.show( "drop", {direction: 'left'}, 1000)
       }
       signinForm.hide( "drop", {direction:'right'}, 500, showSignUp)
-      // return false
    })
-
 
    signinLinks.children('#signin').click( ()=>{
       event.stopPropagation()
@@ -34,54 +33,26 @@ $(function(){
          signinForm.show( "drop", {direction: 'left'}, 1000)
       }
       accountForm.hide( "drop", {direction:'right'}, 500, showSignin)
-
-      // accountForm.detach()
-      // $('.forms').append(signinForm)
    })
 
    signinLinks.children('#about').click( ()=>{
       event.stopPropagation()
-      if ($('div.information').length > 0) {
-         $('div.information').remove()
-      } else {
-         let aboutDiv = $('<div>')
-               .attr('class','about')
-               .html('<div class="information">')
-               .appendTo('.container');
-            $('div.information')
-               .html('<h1>Weddings are wonderful. <br>Planning them sucks</h1>')
-               .append('<p>Ever wanted to ask someone to \"Plan this wedding for me?\"<br> That\'s where we come in.</p>')
-               .append(
-                  $('<button>')
-                     .attr('class','hide-info')
-                     .text('Close Window')
-                     .click( ()=>{
-                        event.stopPropagation()
-                        aboutDiv.fadeOut("slow", ()=>{
-                           aboutDiv.remove()
-                        })
-                     })
-                  );
-
-         // poster="/images/#"
-         let videoEmbed = $('<div>')
-             .attr('class','video')
-             .html('<video controls name="weddings-suck"><source src="images/weddings-suck.m4v" type="video/mp4"></video')
-             .prependTo(aboutDiv);
-      }
+      drawAboutDiv()
    })
 
    $('button.new-account').click(function() {
       event.stopPropagation()
       let newAccountData = accountFormCompile();
-      $.ajax({
-         // hit account create
-         url: "/account/signup",
-         method: "POST",
-         data: newAccountData
-      }).done((successful) => {
-         logEmIn(newAccountData)
-      }); // log em in
+      if (newAccountData) {
+         $.ajax({
+            // hit account create
+            url: "/account/signup",
+            method: "POST",
+            data: newAccountData
+         }).done((successful) => {
+            logEmIn(newAccountData)
+         });
+      }
    });
    $('button.signin').click(function() {
       event.stopPropagation()
@@ -90,6 +61,7 @@ $(function(){
          password: signinForm.children('input').eq(1).val()
       }); // log em in
    });
+
 
    let logEmIn = function(data){
       if (!data.email && data.emails.indexOf(',' != -1)) {
@@ -202,33 +174,80 @@ $(function(){
       saveButt.click( ()=> {
          event.stopPropagation()
          let updateData = accountFormCompile()
-         updateData['id'] = localStorage.myAccount
-         $.ajax({
-            'beforeSend': verifyToken,
-            url: "/account",
-            method: "PUT",
-            data: updateData
-         }).done((accountInfo)=> {
-            console.log(accountInfo);
-            logEmIn(updateData);
-         })
+         if (updateData) {
+            updateData['id'] = localStorage.myAccount
+            $.ajax({
+               'beforeSend': verifyToken,
+               url: "/account",
+               method: "PUT",
+               data: updateData
+            }).done((accountInfo)=> {
+               console.log(accountInfo);
+               logEmIn(updateData);
+            })
+         }
       })
       saveButt.appendTo($(accountForm).children('div.actions'))
    }
 
    let accountFormCompile = function(){
-      let emails = '';
-      emails += accountForm.children('input').eq(0).val();
-      emails += ',' + accountForm.children('div').eq(0).children('input').eq(0).val();
-      emails += ',' + accountForm.children('input').eq(1).val();
-      let password = accountForm.children('div').eq(1).children('input').eq(0).val();
-      let greeting = accountForm.children('div').eq(2).children('input').eq(0).val();
-      let accountData = {
-         emails: emails,
-         password: password,
-         greeting: greeting
+      debugger
+      let regEmail = /.+@.+\..+/i,
+          accountData = {
+             alerts: []
+          };
+
+      let email1 = accountForm.children('input').eq(0).val(),
+          email2 = accountForm.children('div').eq(0).children('input').eq(0).val(),
+          email3 = accountForm.children('input').eq(1).val(),
+          password = accountForm.children('div').eq(1).children('input').eq(0).val();
+
+      debugger
+      // regex checks on email
+      if (email1 == '') {
+         accountData['alerts'].push("Email 1 is blank")
+      } else if (!regEmail.test(email1)) {
+         accountData['alerts'].push("Email 1 is not valid")
       }
-      return accountData
+
+      if (email2 != '' && !regEmail.test(email2)) {
+         accountData['alerts'].push("Email 2 is not valid")
+      }
+      if (email3 != '' && !regEmail.test(email3)) {
+         accountData['alerts'].push("Email 3 is not valid")
+      }
+
+      // regex checks on password
+      debugger
+      if (password == '') {
+         accountData['alerts'].push("Password cannot be blank")
+      } else if (!/^(?=.*[a-z])(?=.*[A-Z]).{4,15}$/.test(password)) {
+         accountData['alerts'].push("Your password must be between 4 - 15 characters long.")
+      } else if (!/^(?=.*[a-z])(?=.*[A-Z]).{1,100}$/.test(password)) {
+         accountData['alerts'].push("Your password must contain at least one capital letter.")
+      } else if (!/^(?=.*\d).{4,15}$/.test(password)) {
+         accountData['alerts'].push("Your password must contain at least one number.")
+      }
+
+      if (accountData.alerts.length > 0) {
+         alert('\n'+accountData.alerts.join('\n\n'))
+         return false
+      } else {
+         let emails = '';
+         emails += email1;
+         emails += ',' + email2;
+         emails += ',' + email3;
+
+         let greeting = accountForm.children('div').eq(2).children('input').eq(0).val();
+         let accountData = {
+            emails: emails,
+            password: password,
+            greeting: greeting
+         }
+
+         // gather form data
+         return accountData
+      }
    }
 
    let drawDeleteButt = function(){
@@ -280,6 +299,37 @@ $(function(){
          $('#angularize').removeClass('hidden')
       } else {
          logEmOut()
+      }
+   }
+
+   let drawAboutDiv = function() {
+      if ($('div.information').length > 0) {
+         $('div.information').remove()
+      } else {
+         let aboutDiv = $('<div>')
+               .attr('class','about')
+               .html('<div class="information">')
+               .appendTo('.container');
+            $('div.information')
+               .html('<h1>Weddings are wonderful. <br>Planning them sucks</h1>')
+               .append('<p>Ever wanted to ask someone to \"Plan this wedding for me?\"<br> That\'s where we come in.</p>')
+               .append(
+                  $('<button>')
+                     .attr('class','hide-info')
+                     .text('Close Window')
+                     .click( ()=>{
+                        event.stopPropagation()
+                        aboutDiv.fadeOut("slow", ()=>{
+                           aboutDiv.remove()
+                        })
+                     })
+                  );
+
+         // poster="/images/#"
+         let videoEmbed = $('<div>')
+             .attr('class','video')
+             .html('<video controls name="weddings-suck"><source src="images/weddings-suck.m4v" type="video/mp4"></video')
+             .prependTo(aboutDiv);
       }
    }
 

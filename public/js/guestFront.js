@@ -60,8 +60,6 @@ $(() =>{
    // })
 
    // identify buttons
-
-
    let svtdSaveButt = $('button#svtd-submit');
        svtdSaveButt.click(() => {
          event.stopPropagation()
@@ -72,50 +70,9 @@ $(() =>{
             method: "POST",
             data: svtdData
          }).done((successful) => {
-            latestGuest(successful);
+            showAllGuests(successful);
          });
        });
-
-   // let rsvpSaveButt = $('button#rsvp');
-   //     rsvpSaveButt.click(() => {
-   //       event.stopPropagation()
-   //       let rsvpData = rsvpCompile();
-   //       $.ajax({
-   //          // rsvp info
-   //          url: "/guest/rsvp",
-   //          method: "POST",
-   //          data: newGuestData
-   //       }).done((successful) => {
-   //          showAllGuests();
-   //       }); // log em in
-   //     });
-   // let guestListButt= $('button#rsvp');
-   //
-   // let showActions = function(data){
-   //    if (data.guest._id) {
-   //       localStorage.setItem('token',data.token)
-   //       localStorage.setItem('myAccount',data.guest._id);
-   //
-   //       signinLinks.detach();
-   //       $('.forms').empty();
-   //       if ($('.verify-signout')) {
-   //          $('.verify-signout').remove()
-   //       }
-   //       drawLogout(data.guest)
-   //       drawAddGuests()
-   //    } else {
-   //       console.log('bad token!');
-   //       // goHome()
-   //    }
-   // }
-
-   let latestGuest = function(data){
-      if ($('.guest-svtd')) {
-         $('.guest-svtd').remove()
-      }
-      localStorage.setItem('latestGuest',data._id)
-      getAllGuests();
-   }
 
    let guestFormCompile = () =>{
       let guestData = {
@@ -129,9 +86,6 @@ $(() =>{
    }
 
    let getAllGuests = () =>{
-      if ($('#guest-list')) {
-         $('#guest-list').remove()
-      }
       $.ajax({
          'beforeSend': verifyToken,
          url: "/guest/all/" + localStorage.myAccount,
@@ -141,15 +95,27 @@ $(() =>{
       })
    }
 
-   let showAllGuests = function(data){
+   let showAllGuests = (data) => {
+      debugger
       console.log('Showing all guests:');
-      let guestListDiv = $('<div>')
+      let guestListDiv,
+          guests;
+
+      if ($('#guest-list').length == 0){
+         guestListDiv = $('<div>')
             .attr('id','guest-list')
             .append(guestListMenu());
-
-      let guests = $('<div>')
+      } else {
+         guestListDiv = $('#guest-list')
+      }
+      if ($('.guests-scroll').length == 0) {
+         guests = $('<div>')
             .attr('class','guests-scroll')
             .appendTo(guestListDiv)
+      } else if ($('.guests-scroll')) {
+         guests = $('.guests-scroll')
+         guests.empty()
+      }
 
       for (var i = 0; i < data.length ; i++) {
          let contentPar = $('<div>')
@@ -174,12 +140,23 @@ $(() =>{
          .append($('<ul>'))
 
       $('<li>')
+         .text('All Guests')
+         .appendTo(actions.children('ul'))
+         .click( ()=> {
+            event.stopPropagation()
+            if ($('#guest-scroll')) {
+               $('#guest-scroll').remove()
+            }
+            $('#menu-view-guests').click()
+         })
+
+      $('<li>')
          .text('Done 💁')
          .appendTo(actions.children('ul'))
          .click( ()=> {
             event.stopPropagation()
-            if ($('#guest-list')) {
-               $('#guest-list').remove()
+            if ($('#guest-scroll')) {
+               $('#guest-scroll').remove()
             }
             $.ajax({
                'beforeSend': verifyToken,
@@ -196,8 +173,8 @@ $(() =>{
          .appendTo(actions.children('ul'))
          .click( ()=> {
             event.stopPropagation()
-            if ($('#guest-list')) {
-               $('#guest-list').remove()
+            if ($('#guest-scroll')) {
+               $('#guest-scroll').remove()
             }
             $.ajax({
                'beforeSend': verifyToken,
@@ -214,8 +191,8 @@ $(() =>{
          .appendTo(actions.children('ul'))
          .click( ()=> {
             event.stopPropagation()
-            if ($('#guest-list')) {
-               $('#guest-list').remove()
+            if ($('#guest-scroll')) {
+               $('#guest-scroll').remove()
             }
             $.ajax({
                'beforeSend': verifyToken,
@@ -238,7 +215,7 @@ $(() =>{
         method: "POST",
         data: guestData
       }).done((successful) => {
-        showAllGuests();
+        showAllGuests(successful);
       }); // log em in
    }
 
@@ -250,37 +227,38 @@ $(() =>{
           .attr('value',id)
           .appendTo(container)
           .click(() => {
-
              event.stopPropagation()
              let id = $(event.toElement).attr('value')
              fetchGuest(id)
           });
+
       let svtdButt = $('<button>')
-           .attr('class','svtd-guest')
-           .text('SVTD')
-           .attr('value',id)
-           .appendTo(container)
-           .click(() => {
-             event.stopPropagation()
-              let guestName = $(event.toElement).eq(0).parent().siblings().eq(0).text()
-              let id = $(event.toElement).attr('value')
-              localStorage.setItem('myGuest',id)
-              localStorage.setItem('tempName',guestName)
-              $('#menu-svtd').click()
+            .attr('class','email-guest')
+            .text('Email')
+            .attr('value',id)
+            .appendTo(container)
+            .click(() => {
+               alert('email sent')
+               // event.stopPropagation()
+               // let guestName = $(event.toElement).eq(0).parent().siblings().eq(0).text()
+               // let id = $(event.toElement).attr('value')
+               // localStorage.setItem('myGuest',id)
+               // localStorage.setItem('tempName',guestName)
+               // $('#menu-svtd').click()
            });
-      let rsvpButt = $('<button>')
-           .attr('class','rsvp-guest')
-           .text('RSVP')
-           .attr('value',id)
-           .appendTo(container)
-           .click(() => {
-             event.stopPropagation()
-              let guestName = $(event.toElement).eq(0).parent().siblings().eq(0).text()
-              let id = $(event.toElement).attr('value')
-              localStorage.setItem('myGuest',id)
-              localStorage.setItem('tempName',guestName)
-              $('#menu-rsvp').click()
-           });
+      // let rsvpButt = $('<button>')
+      //      .attr('class','rsvp-guest')
+      //      .text('RSVP')
+      //      .attr('value',id)
+      //      .appendTo(container)
+      //      .click(() => {
+      //        event.stopPropagation()
+      //         let guestName = $(event.toElement).eq(0).parent().siblings().eq(0).text()
+      //         let id = $(event.toElement).attr('value')
+      //         localStorage.setItem('myGuest',id)
+      //         localStorage.setItem('tempName',guestName)
+      //         $('#menu-rsvp').click()
+      //      });
 
 
 
@@ -345,21 +323,22 @@ $(() =>{
                method: "PUT",
                data: guestData
             }).done((successful) => {
-               latestGuest(successful);
                $('button.create-guest').show()
                $('.add-edit-guest').children('button.update-guest').remove()
+               showGuestList()
             });
          })
-
-      localStorage.setItem('latestGuest',data._id)
-
+      showGuestList()
    }
    let editGuest = function(json){
-
+      debugger
       console.log('edit guest');
    }
 
    let showGuestList = function() {
+      if ($('.guest-svtd')) {
+         $('.guest-svtd').remove()
+      }
       if ($('div.add-edit-guest').length == 0) {
          let guestDiv = $('<div>').attr('class','add-edit-guest')
              guestDiv.html('<label>Full name of Guest:</label><input type=\"text\" placeholder=\"Mr. E. Mann\"></input><label>Guest email address:</label><input type=\"email\" placeholder=\"mysteryman@gmail.com\"></input>')
@@ -377,7 +356,7 @@ $(() =>{
                   method: "POST",
                   data: newGuestData
                }).done((successful) => {
-                  latestGuest(successful);
+                  showAllGuests();
                });
             })
 
@@ -414,8 +393,8 @@ $(() =>{
       }
 
       let stateDropDown = $('<select>')
-            .insertBefore(formDiv.children().eq(-2))
             .append('<option selected="true" disabled="disabled">Select State:</option>')
+            .insertBefore(formDiv.children().eq(-2))
             .next().css('width','100px');
 
       let stateVals = {
@@ -530,17 +509,15 @@ $(() =>{
             'notes': $('.guest-svtd').children('textarea').eq(0).val()
          }
          $.ajax({
-            // save the date info
             url: "/guest/svtd",
             method: "PUT",
             data: guestUpdate
          }).done((successful) => {
             localStorage.removeItem(myGuest);
             localStorage.removeItem(tempName);
-            latestGuest(successful);
+            showAllGuests(successful);
          });
       } else {
-         // console.log('this is just an example');
          alert('this is just an example')
       }
 
@@ -681,7 +658,6 @@ $(() =>{
    }
 
    let saveRsvpResponse = function(){
-      debugger
       if (localStorage.myGuest) {
          let plusOne = function(){
             return ($('.guest-rsvp').children('select').eq(0).val == "true") ? true : false;
@@ -698,7 +674,6 @@ $(() =>{
             'song': $('.guest-rsvp').children().eq(9).children('input').eq(0).val() ,
             'message': $('.guest-rsvp').children('textarea').eq(0).val()
          }
-         debugger
          $.ajax({
             // save the date info
             url: "/guest/rsvp",
@@ -707,15 +682,13 @@ $(() =>{
          }).done((successful) => {
             localStorage.removeItem(myGuest);
             localStorage.removeItem(tempName);
-            latestGuest(successful);
+            showAllGuests(successful);
          });
       } else {
          // console.log('this is just an example');
          alert('this is just an example')
       }
    }
-
-   // let inputFactory = function(elementType,object,attrArray){}
 
    let logEmOut = () =>{
       if (localStorage.token) {
