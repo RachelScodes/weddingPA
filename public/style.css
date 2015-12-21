@@ -292,14 +292,16 @@ div#angularize {
     overflow-y: auto;
 }
 
-.add-edit-guest {
+.add-edit-guest,
+.add-edit-vendor {
     /* float: left; */
     position: relative;
     width: 50%;
     display: inline-block;
 }
 
-#guest-list {
+#guest-list,
+#vendor-list {
     float: right;
     width: 60%;
     position: relative;
@@ -313,7 +315,8 @@ div#angularize {
     /* overflow: auto; */
 }
 
-.guest-ind button {
+.guest-ind button,
+.vendor-ind button {
     font-size: 1em;
     width: auto;
     height: auto;
@@ -324,15 +327,18 @@ div#angularize {
     position: relative;
 }
 
-.guest-ind p {
+.guest-ind p,
+.vendor-ind p {
     display: inline-block;
     font-style: italic;
 }
 
-span.guest-email {
+span.guest-email,
+span.vendor-type {
 }
 
-.add-edit-guest label {
+.add-edit-guest label,
+.add-edit-vendor label {
     width: auto;
     text-align: center;
     float: none;
@@ -344,6 +350,7 @@ ul.options-menu li {
     margin-right: 0;
     padding-left: 20px;
     padding-right: 10px;
+    max-width: 20%;
 }
 
 h2 {
@@ -357,7 +364,8 @@ ul.options-menu {
     margin: 0;
 }
 
-.add-edit-guest button {
+.add-edit-guest button,
+.add-edit-vendor button {
     display: inline-block;
     font-size: 1em;
     width: 78px;
@@ -374,23 +382,27 @@ ul.options-menu {
     margin: 0;
 }
 
-.add-edit-guest button {
+.add-edit-guest button, 
+.add-edit-vendor button {
     display: inline-block;
     font-size: 1em;
     width: 78px;
 }
 
-p.guest-ind {
+p.guest-ind,
+p.vendor-ind {
     height: auto;
     display: block;
     box-sizing: border-box;
 }
 
-p.guest-ind button {
+p.guest-ind button,
+p.vendor-ind button {
     /* margin: 0; */
     margin-left: 10px;
 }
-.guest-ind {
+.guest-ind,
+.vendor-ind {
    background-color: rgba(255,255,255,0.5);
    height: 39px;
    padding: 10px 10px 5px 10px;
@@ -400,7 +412,8 @@ p.guest-ind button {
    justify-content: space-between;
    align-items: baseline;
 }
-.guest-ind p {
+.guest-ind p,
+.vendor-ind p {
    line-height: 30px;
    margin: 0;
    text-transform: capitalize;
@@ -414,14 +427,16 @@ span#who {
     text-transform: capitalize;
 }
 
-span.guest-email {
+span.guest-email,
+span.vendor-type {
     text-transform: lowercase;
     font-family: 'Dosis', sans-serif;
     position: relative;
     text-align: center;
 }
 
-.add-edit-guest button {
+.add-edit-guest button,
+.add-edit-vendor button {
     width: 30%;
     min-width: 100px;
     max-width: 75%;
@@ -457,19 +472,22 @@ ul.options-menu {
     justify-content: space-around;
 }
 
-.add-edit-guest {
+.add-edit-guest,
+.add-edit-vendor {
     max-width: 40%;
     min-width: 300px;
     /* border-right: 4px dotted; */
     padding-right: 30px;
 }
 
-p.guest-ind button {
+p.guest-ind button,
+p.vendor-ind button {
     margin: 3px 0px 0px 10px;
     display: inline-grid;
 }
 
-.guest-ind:nth-child(even) {
+.guest-ind:nth-child(even),
+.vendor-ind:nth-child(even) {
     background: rgba(255,255,255,0.7);
 }
 
@@ -477,19 +495,22 @@ p.guest-ind button {
     margin-left: 10px;
 }
 
-ul.guest-list-menu {
+ul.guest-list-menu,
+ul.vendor-list-menu {
     color: whitesmoke;
     list-style: none;
     padding-left: 0;
     border: none;
 }
 
-.guest-list-menu h2 {
+.guest-list-menu h2,
+.vendor-list-menu h2 {
     display: inline-block;
     width: auto;
 }
 
-.guest-list-menu li {
+.guest-list-menu li,
+.vendor-list-menu li {
     display: inline-block;
     border-left: none;
     font-family: 'Dosis', sans-serif;
@@ -500,11 +521,13 @@ ul.guest-list-menu {
     /* display: table-cell; */
 }
 
-.guest-list-menu {
+.guest-list-menu,
+.vendor-list-menu {
     color: rgba(255,255,255,0.8);
 }
 
-.guest-list-menu ul {
+.guest-list-menu ul,
+.vendor-list-menu ul {
     display: flex;
     justify-content: space-around;
     margin: 0;
@@ -516,12 +539,14 @@ ul.guest-list-menu {
     overflow: hidden;
 }
 
-.guest-list-menu li {
+.guest-list-menu li,
+.vendor-list-menu li {
     width: 33%;
     height: 30px;
 }
 
-.guest-list-menu li:hover {
+.guest-list-menu li:hover,
+.vendor-list-menu li:hover {
     background: linear-gradient(rgba(0, 0, 0, 0), rgba(151, 85, 128, 0.62));
     border-radius: 0 5px 0 0;
 }
@@ -544,7 +569,8 @@ video {
     font-size: 1em;
 }
 
-.guests-scroll {
+.guests-scroll,
+.vendors-scroll {
    overflow-y: auto;
    text-align: left;
    height: 185px;

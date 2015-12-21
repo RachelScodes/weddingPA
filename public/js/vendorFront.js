@@ -8,169 +8,134 @@ $(() =>{
    }
 
    // define menu items
-   $('#menu-view-guests').click( () => {
+   $('#menu-view-vendors').click( () => {
+      debugger
       event.stopPropagation()
-      $('.guest-svtd').hide()
-      $('.guest-rsvp').hide()
-      $('.add-edit-guest').show()
-      $('div#guest-list').show()
-      removeVendorInfo()
+      removeGuestInfo()
+      showEditVendor()
+      showVendorList()
       localStorage.removeItem('tempName')
-      console.log('show guest add edit view');
-      showGuestList()
+      console.log('show vendor add edit view');
    })
-   $('#menu-svtd').click( () => {
-      $('.add-edit-guest').hide()
-      $('div#guest-list').hide()
-      $('.guest-rsvp').hide()
-      $('.guest-svtd').show()
-      event.stopPropagation()
-      console.log('show save the date form');
-      removeVendorInfo()
-      showSvtdForm()
-   })
-   $('#menu-rsvp').click( () => {
-      $('.add-edit-guest').hide()
-      $('div#guest-list').hide()
-      $('.guest-svtd').hide()
-      $('.guest-rsvp').show()
-      event.stopPropagation()
-      console.log('show rsvp form');
-      removeVendorInfo()
-      showRsvpForm()
-   })
+   // future features
+   // $('menu-export-vendors').click( () => {
+   //    event.stopPropagation()
+   //    showEditVendor()
+   //    console.log('');
+   // })
 
-
-   let removeVendorInfo = function(){
-      if ($('.add-edit-vendor').length != 0) {
-         $('.add-edit-vendor').remove()
-         $('#vendor-list').remove()
+   // clear div of guest info
+   let removeGuestInfo = function(){
+      debugger
+      if ($('.add-edit-guest').length != 0) {
+         $('.add-edit-guest').remove()
+         $('#guest-list').remove()
+      } else if ($('.guest-svtd').length != 0){
+         $('.guest-svtd').remove();
+      } else if ($('.guest-rsvp').length != 0){
+         $('.guest-rsvp').remove();
       }
    }
-
-   // future features
-   // $('menu-send-emails').click( () => {
-   //    event.stopPropagation()
-   //    showEditGuest()
-   //    console.log('');
-   // })
-   // $('menu-export-guests').click( () => {
-   //    event.stopPropagation()
-   //    showEditGuest()
-   //    console.log('');
-   // })
 
    // identify buttons
-   let svtdSaveButt = $('button#svtd-submit');
-       svtdSaveButt.click(() => {
-         event.stopPropagation()
-         let svtdData = svtdCompile();
-         $.ajax({
-            // save the date info
-            url: "/guest/svtd",
-            method: "POST",
-            data: svtdData
-         }).done((successful) => {
-            showAllGuests(successful);
-         });
-       });
-
-   let guestFormCompile = () =>{
-
-      let regEmail = /.+@.+\..+/i,
-          email = $('.add-edit-guest').children('input').eq(1).val(),
-          fullName = $('.add-edit-guest').children('input').eq(0).val(),
-          guestData = {
-             alerts: []
-          };
-
-      if (fullName == '') {
-         guestData['alerts'].push('Name can\'t be blank')
-      }
-      if (email == '') {
-         guestData['alerts'].push('Email can\'t be blank')
-      } else if (!regEmail.test(email)) {
-         guestData['alerts'].push('Invalid email')
-      }
-
-      if (guestData.alerts.length > 0) {
-         alert('\n'+guestData.alerts.join('\n\n'))
-         return false
-      } else {
-         let guestData = {
-            myAccount: localStorage.myAccount,
-            fullName: fullName,
-            email: email
-         }
-         $('.add-edit-guest').children('input').eq(0).val('')
-         $('.add-edit-guest').children('input').eq(1).val('')
-         return guestData
-      }
+   let vendorFormCompile = () =>{
+      console.log('get data from vendor form');
+      // let regEmail = /.+@.+\..+/i,
+      //     email = $('.add-edit-vendor').children('input').eq(1).val(),
+      //     fullName = $('.add-edit-vendor').children('input').eq(0).val(),
+      //     vendorData = {
+      //        alerts: []
+      //     };
+      //
+      // if (fullName == '') {
+      //    vendorData['alerts'].push('Name can\'t be blank')
+      // }
+      // if (email == '') {
+      //    vendorData['alerts'].push('Email can\'t be blank')
+      // } else if (!regEmail.test(email)) {
+      //    vendorData['alerts'].push('Invalid email')
+      // }
+      //
+      // if (vendorData.alerts.length > 0) {
+      //    alert('\n'+vendorData.alerts.join('\n\n'))
+      //    return false
+      // } else {
+      //    let vendorData = {
+      //       myAccount: localStorage.myAccount,
+      //       fullName: fullName,
+      //       email: email
+      //    }
+      //    $('.add-edit-vendor').children('input').eq(0).val('')
+      //    $('.add-edit-vendor').children('input').eq(1).val('')
+      //    return vendorData
+      // }
    }
 
-   let getAllGuests = () =>{
+   let getAllVendors = () =>{
       $.ajax({
          'beforeSend': verifyToken,
-         url: "/guest/all/" + localStorage.myAccount,
+         url: "/vendor/all/" + localStorage.myAccount,
          method: "GET"
-      }).done((guestList)=> {
-         showAllGuests(guestList)
+      }).done((vendorList)=> {
+         showAllVendors(vendorList)
       })
    }
 
-   let showAllGuests = (data) => {
+   let showAllVendors = (data) => {
       debugger
-      console.log('Showing all guests:');
-      let guestListDiv,
-          guests;
+      console.log('Showing all vendors:');
+      let vendorListDiv,
+          vendors;
 
-      if ($('#guest-list').length == 0){
-         guestListDiv = $('<div>')
-            .attr('id','guest-list')
-            .append(guestListMenu());
+      if ($('#vendor-list').length == 0){
+         vendorListDiv = $('<div>')
+            .attr('id','vendor-list')
+            .append(vendorListMenu());
       } else {
-         guestListDiv = $('#guest-list')
+         vendorListDiv = $('#vendor-list')
       }
-      if ($('.guests-scroll').length == 0) {
-         guests = $('<div>')
-            .attr('class','guests-scroll')
-            .appendTo(guestListDiv)
-      } else if ($('.guests-scroll')) {
-         guests = $('.guests-scroll')
-         guests.empty()
+      if ($('.vendors-scroll').length == 0) {
+         vendors = $('<div>')
+            .attr('class','vendors-scroll')
+            .appendTo(vendorListDiv)
+      } else if ($('.vendors-scroll')) {
+         vendors = $('.vendors-scroll')
+         vendors.empty()
       }
 
       for (var i = 0; i < data.length ; i++) {
          let contentPar = $('<div>')
-               .attr('class','guest-ind')
-               .append($('<p>').text(data[i].fullName))
+               .attr('class','vendor-ind')
+               .append($('<p>').text(data[i].businessName))
 
          let eSpan = $('<span>')
-               .attr('class','guest-email')
-               .text(data[i].email)
+               .attr('class','vendor-type')
+               .text(data[i].businessType)
                .appendTo(contentPar);
 
-         drawGuestButtons(contentPar,data[i]._id)
-         contentPar.appendTo(guests);
+         drawVendorButtons(contentPar,data[i]._id)
+         contentPar.appendTo(vendors);
       }
-      guestListDiv.appendTo('#angularize')
+      vendorListDiv.appendTo('#angularize')
    }
 
-   let guestListMenu = function(){
+   let vendorListMenu = function(){
+      debugger
+      console.log('draw vendor menu');
       let actions = $('<div>')
-         .attr('class','guest-list-menu')
-         .append('<h2>Guest List:</h2>')
+         .attr('class','vendor-list-menu')
+         .append('<h2>Vendor List:</h2>')
          .append($('<ul>'))
 
       $('<li>')
-         .text('All Guests')
+         .text('All Vendors')
          .appendTo(actions.children('ul'))
          .click( ()=> {
             event.stopPropagation()
-            if ($('#guest-scroll')) {
-               $('#guest-scroll').remove()
+            if ($('#vendor-scroll')) {
+               $('#vendor-scroll').remove()
             }
-            $('#menu-view-guests').click()
+            $('#menu-view-vendors').click()
          })
 
       $('<li>')
@@ -178,117 +143,103 @@ $(() =>{
          .appendTo(actions.children('ul'))
          .click( ()=> {
             event.stopPropagation()
-            if ($('#guest-scroll')) {
-               $('#guest-scroll').remove()
+            if ($('#vendor-scroll')) {
+               $('#vendor-scroll').remove()
             }
             $.ajax({
                'beforeSend': verifyToken,
-               url: "/guest/done/" + localStorage.myAccount,
+               url: "/vendor/done/" + localStorage.myAccount,
                method: "GET"
-            }).done((guestList)=> {
+            }).done((vendorList)=> {
                console.log('DONE mongo query for svtd finished false');
-               showAllGuests(guestList)
+               showAllVendors(vendorList)
             })
          })
 
       $('<li>')
-         .text('No Contact Info')
+         .text('Sort by Type')
          .appendTo(actions.children('ul'))
          .click( ()=> {
             event.stopPropagation()
-            if ($('#guest-scroll')) {
-               $('#guest-scroll').remove()
+            if ($('#vendor-scroll')) {
+               $('#vendor-scroll').remove()
             }
             $.ajax({
                'beforeSend': verifyToken,
-               url: "/guest/query/svtd/" + localStorage.myAccount,
+               url: "/vendor/query/svtd/" + localStorage.myAccount,
                method: "GET"
-            }).done((guestList)=> {
+            }).done((vendorList)=> {
                console.log('DONE mongo query for rsvp and svtd finished true');
-               showAllGuests(guestList)
+               showAllVendors(vendorList)
             })
          })
 
       $('<li>')
-         .text('No RSVP Info')
+         .text('Sort by Price')
          .appendTo(actions.children('ul'))
          .click( ()=> {
             event.stopPropagation()
-            if ($('#guest-scroll')) {
-               $('#guest-scroll').remove()
+            if ($('#vendor-scroll')) {
+               $('#vendor-scroll').remove()
             }
             $.ajax({
                'beforeSend': verifyToken,
-               url: "/guest/query/rsvp/" + localStorage.myAccount,
+               url: "/vendor/query/rsvp/" + localStorage.myAccount,
                method: "GET"
-            }).done((guestList)=> {
+            }).done((vendorList)=> {
                console.log('DONE mongo query for rsvp finished false');
-               showAllGuests(guestList)
+               showAllVendors(vendorList)
             })
          })
       return actions
    }
 
-   let showEditGuest = () =>{
+   let showEditVendor = () =>{
       console.log('show the edit form here');
-      let guestData = guestFormCompile();
-      if (guestData){
-         $.ajax({
-           // hit guest create
-           url: "/guest/add",
-           method: "POST",
-           data: guestData
-         }).done((successful) => {
-           showAllGuests(successful);
-         }); // log em in
-      }
+      // let vendorData = vendorFormCompile();
+      // if (vendorData){
+      //    $.ajax({
+      //      // hit vendor create
+      //      url: "/vendor/add",
+      //      method: "POST",
+      //      data: vendorData
+      //    }).done((successful) => {
+      //      showAllVendors(successful);
+      //    }); // log em in
+      // }
    }
 
-   let drawGuestButtons = function(element,id) {
-      let container = $('<div>').attr('class','guest-list-buttons')
-      let updateGuestButt = $('<button>')
-          .attr('class','update-guest')
+   let drawVendorButtons = function(element,id) {
+      console.log('draw buttons on each venor item');
+      let container = $('<div>').attr('class','vendor-list-buttons')
+      let updateVendorButt = $('<button>')
+          .attr('class','update-vendor')
           .text('Update')
           .attr('value',id)
           .appendTo(container)
           .click(() => {
              event.stopPropagation()
              let id = $(event.toElement).attr('value')
-             fetchGuest(id)
+             fetchVendor(id)
           });
 
-      let svtdButt = $('<button>')
-            .attr('class','email-guest')
+      let payButt = $('<button>')
+            .attr('class','email-vendor')
             .text('Email')
             .attr('value',id)
             .appendTo(container)
             .click(() => {
-               alert('send email down temporarily. try again later.')
+               alert('email sent')
                // event.stopPropagation()
-               // let guestName = $(event.toElement).eq(0).parent().siblings().eq(0).text()
+               // let vendorName = $(event.toElement).eq(0).parent().siblings().eq(0).text()
                // let id = $(event.toElement).attr('value')
-               // localStorage.setItem('myGuest',id)
-               // localStorage.setItem('tempName',guestName)
+               // localStorage.setItem('myVendor',id)
+               // localStorage.setItem('tempName',vendorName)
                // $('#menu-svtd').click()
            });
-      // let rsvpButt = $('<button>')
-      //      .attr('class','rsvp-guest')
-      //      .text('RSVP')
-      //      .attr('value',id)
-      //      .appendTo(container)
-      //      .click(() => {
-      //        event.stopPropagation()
-      //         let guestName = $(event.toElement).eq(0).parent().siblings().eq(0).text()
-      //         let id = $(event.toElement).attr('value')
-      //         localStorage.setItem('myGuest',id)
-      //         localStorage.setItem('tempName',guestName)
-      //         $('#menu-rsvp').click()
-      //      });
 
-
-
-      let deleteGuestButt = $('<button>')
-          .attr('class','delete-guest')
+      let deleteVendorButt = $('<button>')
+          .attr('class','delete-vendor')
           .text('Remove')
           .attr('value',id)
           .appendTo(container)
@@ -297,101 +248,101 @@ $(() =>{
              event.stopPropagation()
              console.log('run delete action');
              let dataObj = {
-                guestId: $(event.toElement).attr('value')
+                vendorId: $(event.toElement).attr('value')
              }
 
              $.ajax({
                 'beforeSend': verifyToken,
-                url: "/guest",
+                url: "/vendor",
                 method: "DELETE",
                 data: dataObj
              }).done((message)=> {
                 console.log(message);
-                showGuestList()
+                showVendorList()
              })
           });
 
       container.appendTo(element)
    }
-   let fetchGuest = function(guestId){
+   let fetchVendor = function(vendorId){
       $.ajax({
          'beforeSend': verifyToken,
-         url: "/guest/fetch/" + guestId,
+         url: "/vendor/fetch/" + vendorId,
          method: "GET"
-      }).done((guestObj)=> {
-         if ($('.add-edit-guest').children('button.update-guest')) {
-            $('.add-edit-guest').children('button.update-guest').remove()
+      }).done((vendorObj)=> {
+         if ($('.add-edit-vendor').children('button.update-vendor')) {
+            $('.add-edit-vendor').children('button.update-vendor').remove()
          }
-         renderEdit(guestObj,guestId)
+         renderEdit(vendorObj,vendorId)
       })
    }
    let renderEdit = function(data,id){
-      $('button.create-guest').hide()
-      $('.add-edit-guest').children('input').eq(0).val(data.fullName)
-      $('.add-edit-guest').children('input').eq(1).val(data.email)
+      $('button.create-vendor').hide()
+      $('.add-edit-vendor').children('input').eq(0).val(data.fullName)
+      $('.add-edit-vendor').children('input').eq(1).val(data.email)
 
-      if ($('.add-edit-guest').children('button.updateGuest')) {
-         $('.add-edit-guest').children('button.updateGuest').remove()
+      if ($('.add-edit-vendor').children('button.updateVendor')) {
+         $('.add-edit-vendor').children('button.updateVendor').remove()
       }
-      let buttUpdate = $('<button>').appendTo('.add-edit-guest')
-         .attr('class','update-guest')
+      let buttUpdate = $('<button>').appendTo('.add-edit-vendor')
+         .attr('class','update-vendor')
          .attr('value',id)
          .text('Update')
          .click( ()=> {
 
             event.stopPropagation()
-            let guestData = guestFormCompile();
-            if (guestData) {
-               guestData['id'] = $(event.toElement).attr('value')
+            let vendorData = vendorFormCompile();
+            if (vendorData) {
+               vendorData['id'] = $(event.toElement).attr('value')
                $.ajax({
                   'beforeSend': verifyToken,
-                  url: "/guest/update",
+                  url: "/vendor/update",
                   method: "PUT",
-                  data: guestData
+                  data: vendorData
                }).done((successful) => {
-                  $('button.create-guest').show()
-                  $('.add-edit-guest').children('button.update-guest').remove()
-                  showGuestList()
+                  $('button.create-vendor').show()
+                  $('.add-edit-vendor').children('button.update-vendor').remove()
+                  showVendorList()
                });
             }
          })
-      showGuestList()
+      showVendorList()
    }
-   let editGuest = function(json){
+   let editVendor = function(json){
       debugger
-      console.log('edit guest');
+      console.log('edit vendor');
    }
 
-   let showGuestList = function() {
-      if ($('.guest-svtd')) {
-         $('.guest-svtd').remove()
+   let showVendorList = function() {
+      if ($('.vendor-svtd')) {
+         $('.vendor-svtd').remove()
       }
-      if ($('div.add-edit-guest').length == 0) {
-         let guestDiv = $('<div>').attr('class','add-edit-guest')
-             guestDiv.html('<label>Full name of Guest:</label><input type=\"text\" placeholder=\"Mr. E. Mann\"></input><label>Guest email address:</label><input type=\"email\" placeholder=\"mysteryman@gmail.com\"></input>')
+      if ($('div.add-edit-vendor').length == 0) {
+         let vendorDiv = $('<div>').attr('class','add-edit-vendor')
+             vendorDiv.html('<label>Full name of Vendor:</label><input type=\"text\" placeholder=\"Mr. E. Mann\"></input><label>Vendor email address:</label><input type=\"email\" placeholder=\"mysteryman@gmail.com\"></input>')
 
-         let buttAdd = $('<button>').appendTo(guestDiv)
-            .attr('class','create-guest')
+         let buttAdd = $('<button>').appendTo(vendorDiv)
+            .attr('class','create-vendor')
             .text('Add')
             .click( ()=> {
 
                event.stopPropagation()
-               let newGuestData = guestFormCompile();
-               if (newGuestData) {
+               let newVendorData = vendorFormCompile();
+               if (newVendorData) {
                   $.ajax({
                      'beforeSend': verifyToken,
-                     url: "/guest/add",
+                     url: "/vendor/add",
                      method: "POST",
-                     data: newGuestData
+                     data: newVendorData
                   }).done((successful) => {
-                     showAllGuests();
+                     showAllVendors();
                   });
                }
             })
 
-         guestDiv.appendTo($('#angularize'))
+         vendorDiv.appendTo($('#angularize'))
       }
-      getAllGuests()
+      getAllVendors()
    }
 
    function addBreak(element){
@@ -399,10 +350,10 @@ $(() =>{
    }
 
    let showSvtdForm = function() {
-      if ($('div.guest-svtd')) {
-         $('div.guest-svtd').empty().remove()
+      if ($('div.vendor-svtd')) {
+         $('div.vendor-svtd').empty().remove()
       }
-      let formDiv = $('<div>').attr('class','guest-svtd')
+      let formDiv = $('<div>').attr('class','vendor-svtd')
       $('<h2>')
          .attr('class','svtd-greet')
          .text('You\'re invited to ' + $('#who').text() + '\'s wedding!')
@@ -515,36 +466,36 @@ $(() =>{
 
       if (localStorage.tempName) {
          formDiv.children('input').eq(0).val(localStorage.tempName)
-         submitButt.attr('value',localStorage.myGuest)
-      } else if (localStorage.myGuest) {
-         localStorage.removeItem('myGuest')
+         submitButt.attr('value',localStorage.myVendor)
+      } else if (localStorage.myVendor) {
+         localStorage.removeItem('myVendor')
       }
 
       formDiv.appendTo($('#angularize'))
    }
 
    let saveTheDate = function(){
-      if (localStorage.myGuest) {
-         let guestUpdate = {
-            'fullName': $('.guest-svtd').children('input').eq(0).val() ,
-            'id': localStorage.myGuest ,
-            'street_1': $('.guest-svtd').children('input').eq(1).val() ,
-            'street_2': $('.guest-svtd').children('input').eq(2).val() ,
-            'apt': $('.guest-svtd').children('input').eq(3).val() ,
-            'city': $('.guest-svtd').children('input').eq(4).val() ,
-            'state': $('.guest-svtd').children('select').eq(0).val() ,
-            'zip': $('.guest-svtd').children('input').eq(5).val() ,
-            'phone': $('.guest-svtd').children('input').eq(6).val() ,
-            'notes': $('.guest-svtd').children('textarea').eq(0).val()
+      if (localStorage.myVendor) {
+         let vendorUpdate = {
+            'fullName': $('.vendor-svtd').children('input').eq(0).val() ,
+            'id': localStorage.myVendor ,
+            'street_1': $('.vendor-svtd').children('input').eq(1).val() ,
+            'street_2': $('.vendor-svtd').children('input').eq(2).val() ,
+            'apt': $('.vendor-svtd').children('input').eq(3).val() ,
+            'city': $('.vendor-svtd').children('input').eq(4).val() ,
+            'state': $('.vendor-svtd').children('select').eq(0).val() ,
+            'zip': $('.vendor-svtd').children('input').eq(5).val() ,
+            'phone': $('.vendor-svtd').children('input').eq(6).val() ,
+            'notes': $('.vendor-svtd').children('textarea').eq(0).val()
          }
          $.ajax({
-            url: "/guest/svtd",
+            url: "/vendor/svtd",
             method: "PUT",
-            data: guestUpdate
+            data: vendorUpdate
          }).done((successful) => {
-            localStorage.removeItem(myGuest);
+            localStorage.removeItem(myVendor);
             localStorage.removeItem(tempName);
-            showAllGuests(successful);
+            showAllVendors(successful);
          });
       } else {
          alert('this is just an example')
@@ -553,13 +504,13 @@ $(() =>{
    }
 
    let showRsvpForm = function(){
-      // $('.guest-rsvp').hide()
+      // $('.vendor-rsvp').hide()
 
-      if ($('div.guest-rsvp')) {
-         $('div.guest-rsvp').empty().remove()
+      if ($('div.vendor-rsvp')) {
+         $('div.vendor-rsvp').empty().remove()
       }
 
-      let formDiv = $('<div>').attr('class','guest-rsvp')
+      let formDiv = $('<div>').attr('class','vendor-rsvp')
       $('<h2>')
          .attr('class','rsvp-greet')
          .text('You\'re invited to ' + $('#who').text() + '\'s wedding!')
@@ -636,7 +587,7 @@ $(() =>{
 
 
       $('<div>').attr('class','entree-two')
-         .append('<label>Your guest\'s entree:</label>')
+         .append('<label>Your vendor\'s entree:</label>')
          .appendTo(formDiv)
 
       for (var i in entreeChoices) {
@@ -645,7 +596,7 @@ $(() =>{
       }
 
       $('<div>').attr('class','diet-two')
-         .append('<label>Your guest\'s Dietary restrictions:</label>')
+         .append('<label>Your vendor\'s Dietary restrictions:</label>')
          .append('<input type="text" placeholder="Kosher/Allergic to vegans"></input>')
          .appendTo(formDiv)
 
@@ -676,10 +627,10 @@ $(() =>{
          })
 
       if (localStorage.tempName) {
-         $('.guest-rsvp').children().eq(3).children('input').val(localStorage.tempName)
-         submitButt.attr('value',localStorage.myGuest)
-      } else if (localStorage.myGuest) {
-         localStorage.removeItem('myGuest')
+         $('.vendor-rsvp').children().eq(3).children('input').val(localStorage.tempName)
+         submitButt.attr('value',localStorage.myVendor)
+      } else if (localStorage.myVendor) {
+         localStorage.removeItem('myVendor')
       }
 
       formDiv.appendTo($('#angularize'))
@@ -687,31 +638,31 @@ $(() =>{
    }
 
    let saveRsvpResponse = function(){
-      if (localStorage.myGuest) {
+      if (localStorage.myVendor) {
          let plusOne = function(){
-            return ($('.guest-rsvp').children('select').eq(0).val == "true") ? true : false;
+            return ($('.vendor-rsvp').children('select').eq(0).val == "true") ? true : false;
          }
-         let guestUpdate = {
-            'id': localStorage.myGuest ,
-            'fullName': $('.guest-rsvp').children().eq(3).children('input').val() ,
+         let vendorUpdate = {
+            'id': localStorage.myVendor ,
+            'fullName': $('.vendor-rsvp').children().eq(3).children('input').val() ,
             'attending': $('input[name=attending]:checked').val() ,
             'entree': $('input[name=entree]:checked').val() ,
-            'diet': $('.guest-rsvp').children().eq(5).children('input').val() ,
+            'diet': $('.vendor-rsvp').children().eq(5).children('input').val() ,
             'plus': plusOne() ,
             'entreep': $('input[name=entreep]:checked').val() ,
-            'dietp': $('.guest-rsvp').children().eq(8).children('input').eq(0).val() ,
-            'song': $('.guest-rsvp').children().eq(9).children('input').eq(0).val() ,
-            'message': $('.guest-rsvp').children('textarea').eq(0).val()
+            'dietp': $('.vendor-rsvp').children().eq(8).children('input').eq(0).val() ,
+            'song': $('.vendor-rsvp').children().eq(9).children('input').eq(0).val() ,
+            'message': $('.vendor-rsvp').children('textarea').eq(0).val()
          }
          $.ajax({
             // save the date info
-            url: "/guest/rsvp",
+            url: "/vendor/rsvp",
             method: "PUT",
-            data: guestUpdate
+            data: vendorUpdate
          }).done((successful) => {
-            localStorage.removeItem(myGuest);
+            localStorage.removeItem(myVendor);
             localStorage.removeItem(tempName);
-            showAllGuests(successful);
+            showAllVendors(successful);
          });
       } else {
          // console.log('this is just an example');

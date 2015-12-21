@@ -98,6 +98,7 @@ let kaBLAMO = function(request,response){
          account.remove((err) => {
             if (err) throw err
             else {
+               request['account_info'] = account
                deleteGuests(request, response)
             }
          });
@@ -107,9 +108,30 @@ let kaBLAMO = function(request,response){
 
 let deleteGuests = function(request, response){
    Guest.remove({account_id: request.body.accountId}, (err, guests) => {
-      if (err) throw err
-      else {
-         response.send({'deleted': guests})
+      if (err) {
+         response.send({
+            'failed to delete guests': request.account_info,
+            'error': err,
+         })
+      } else {
+         request['guests'] = guests;
+         deleteVendors(request, response)
+      }
+   })
+}
+
+let deleteVendors = function(request, response){
+   Vendor.remove({account_id: request.body.accountId}, (err, vendors) => {
+      if (err) {
+         response.send({
+            'failed to delete vendors': request.account_info,
+            'error': err,
+         })
+      } else {
+         response.send({
+            'deleted guests': request['guests'],
+            'deleted vendors': vendors
+         })
       }
    })
 }
@@ -121,6 +143,7 @@ let fetch = function(request, response){
       response.json(account);
    })
 }
+
 module.exports = {
    login: accountLogin,
    signup: newAccount,

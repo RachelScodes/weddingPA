@@ -124,7 +124,7 @@ let updateEmail = function(request,response){
 }
 
 let fetchOne = function(request,response){
-   let guestId = request.params.accountId
+   let guestId = request.params.guestId
    Guest.findById(guestId, (err, guest) => {
       if (err) throw err;
       if (!guest) {
