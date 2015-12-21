@@ -17,9 +17,10 @@
 ### Mission statement
 
 Wedding planning **sucks,** specifically keeping track of information:
-1. guest addresses for sending Save The Dates
-1. guest RSVP responses
-1. vendor informations
+  1. guest addresses for sending Save The Dates
+  1. guest RSVP responses
+  1. vendor information
+  1. vendor payment tracking
 
 *PlanThisWeddingFor.Me* helps mitigate the suck by keeping your information organized, and allowing all the members of your planning team to view and manage the same information.
 
