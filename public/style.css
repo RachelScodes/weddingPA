@@ -1,5 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Amatic+SC:400,700|Fredericka+the+Great|Dosis:400,200,300,500,600,700,800|Muli:400,300,300italic,400italic|Lato:400,100italic,100,300,300italic,400italic,700,700italic,900,900italic|Advent+Pro:400,700,600,500,300,200,100|Belleza);
-
+@import url(https://fonts.googleapis.com/css?family=Amatic+SC:400,700|Dosis:400,200,300,500,600,700,800);
 /*
 font-family: 'Amatic SC', cursive;
 font-family: 'Dosis', sans-serif;
@@ -17,6 +16,10 @@ html {
     background-repeat: no-repeat;
     background-position-x: center;
     height: 100%;
+}
+
+.new-bg {
+   background-image: url(http://www.gruberphotographers.com/wp-content/gallery/ellis-island-immigration-museum-wedding/Venue_EllisIsland_003.jpg);
 }
 
 div, input, nav, header, footer {

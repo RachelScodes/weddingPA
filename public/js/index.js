@@ -23,7 +23,6 @@ $(function(){
       }
       signinForm.hide( "drop", {direction:'right'}, 500, showSignUp)
    })
-
    signinLinks.children('#signin').click( ()=>{
       event.stopPropagation()
       let showSignin = function(){
@@ -34,7 +33,6 @@ $(function(){
       }
       accountForm.hide( "drop", {direction:'right'}, 500, showSignin)
    })
-
    signinLinks.children('#about').click( ()=>{
       event.stopPropagation()
       drawAboutDiv()
@@ -64,9 +62,13 @@ $(function(){
 
 
    let logEmIn = function(data){
-      if (!data.email && data.emails.indexOf(',' != -1)) {
-         data['email'] = data.emails.split(',')[0]
+      debugger
+      if (!data.accountId){
+         if (!data.email && data.emails.indexOf(',' != -1)) {
+            data['email'] = data.emails.split(',')[0]
+         }
       }
+      // changePageStyle()
       $.ajax({
          // log em in
          url: "/account/login",
@@ -75,6 +77,15 @@ $(function(){
       }).done((signinData)=> {
          showActions(signinData)
       })
+   }
+
+   let changePageStyle = function(){
+      // $('html').addClass('new-bg')
+      // $('top-nav').css({
+      //    'color':'rgba(255,255,255,0.7)';
+      //    'backgroundColor':'rgba(151, 85, 128, 0.82)';
+      // })
+      console.log('run css changeover here');
    }
 
    let showActions = function(data){
@@ -154,7 +165,6 @@ $(function(){
       drawBackButt()
       drawSaveButt()
       drawDeleteButt()
-      console.log(json);
    }
 
    let drawBackButt = function(){
@@ -182,7 +192,6 @@ $(function(){
                method: "PUT",
                data: updateData
             }).done((accountInfo)=> {
-               console.log(accountInfo);
                logEmIn(updateData);
             })
          }
@@ -191,7 +200,6 @@ $(function(){
    }
 
    let accountFormCompile = function(){
-      debugger
       let regEmail = /.+@.+\..+/i,
           accountData = {
              alerts: []
@@ -202,14 +210,12 @@ $(function(){
           email3 = accountForm.children('input').eq(1).val(),
           password = accountForm.children('div').eq(1).children('input').eq(0).val();
 
-      debugger
       // regex checks on email
       if (email1 == '') {
          accountData['alerts'].push("Email 1 is blank")
       } else if (!regEmail.test(email1)) {
          accountData['alerts'].push("Email 1 is not valid")
       }
-
       if (email2 != '' && !regEmail.test(email2)) {
          accountData['alerts'].push("Email 2 is not valid")
       }
@@ -218,16 +224,20 @@ $(function(){
       }
 
       // regex checks on password
-      debugger
       if (password == '') {
          accountData['alerts'].push("Password cannot be blank")
-      } else if (!/^(?=.*[a-z])(?=.*[A-Z]).{4,15}$/.test(password)) {
-         accountData['alerts'].push("Your password must be between 4 - 15 characters long.")
-      } else if (!/^(?=.*[a-z])(?=.*[A-Z]).{1,100}$/.test(password)) {
-         accountData['alerts'].push("Your password must contain at least one capital letter.")
-      } else if (!/^(?=.*\d).{4,15}$/.test(password)) {
-         accountData['alerts'].push("Your password must contain at least one number.")
+      } else {
+         if (!/^(?=.*[a-z])(?=.*[A-Z]).{4,15}$/.test(password)) {
+            accountData['alerts'].push("Your password must be between 4 - 15 characters long.")
+         }
+         if (!/^(?=.*[a-z])(?=.*[A-Z]).{1,100}$/.test(password)) {
+            accountData['alerts'].push("Your password must contain at least one capital letter.")
+         }
+         if (!/^(?=.*\d).{4,15}$/.test(password)) {
+            accountData['alerts'].push("Your password must contain at least one number.")
+         }
       }
+
 
       if (accountData.alerts.length > 0) {
          alert('\n'+accountData.alerts.join('\n\n'))
@@ -270,7 +280,6 @@ $(function(){
                method: "DELETE",
                data: {'accountId': localStorage.myAccount}
             }).done((accountInfo)=> {
-               console.log(accountInfo);
                alert('Account Deleted. :(')
                logEmOut();
             })
@@ -284,7 +293,7 @@ $(function(){
       if (localStorage.token) {
          localStorage.token = "";
          localStorage.myAccount = "";
-         console.log('logged out');
+         $('html').removeClass('new-bg')
       }
       goHome()
    }
@@ -333,11 +342,14 @@ $(function(){
       }
    }
 
-   if (localStorage.myAccount) {
-      console.log('you were logged in');
-      logEmOut()
-   }
    accountForm.detach();
    signinForm.detach();
    $('.forms').empty();
+
+   (function(){
+      if (localStorage.myAccount) {
+         logEmIn({accountId: localStorage.myAccount})
+         debugger
+      }
+   })()
 })
