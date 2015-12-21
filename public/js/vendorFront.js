@@ -9,13 +9,14 @@ $(() =>{
 
    // define menu items
    $('#menu-view-vendors').click( () => {
-      debugger
-      event.stopPropagation()
-      removeGuestInfo()
-      showEditVendor()
-      showVendorList()
-      localStorage.removeItem('tempName')
-      console.log('show vendor add edit view');
+      alert('feature currently in Beta testing\nEstimated launch: 1.5.2015')
+      // debugger
+      // event.stopPropagation()
+      // removeGuestInfo()
+      // showEditVendor()
+      // showVendorList()
+      // localStorage.removeItem('tempName')
+      // console.log('show vendor add edit view');
    })
    // future features
    // $('menu-export-vendors').click( () => {
