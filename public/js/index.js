@@ -1,5 +1,6 @@
 'use strict'
 $(function(){
+   $( document ).tooltip()
 
    function verifyToken(xhr) {
    	if (localStorage.token) {

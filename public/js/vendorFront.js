@@ -9,14 +9,14 @@ $(() =>{
 
    // define menu items
    $('#menu-view-vendors').click( () => {
-      alert('feature currently in Beta testing\nEstimated launch: 1.5.2015')
-      // debugger
-      // event.stopPropagation()
-      // removeGuestInfo()
-      // showEditVendor()
-      // showVendorList()
-      // localStorage.removeItem('tempName')
-      // console.log('show vendor add edit view');
+      // alert('feature currently in Beta testing\nEstimated launch: 1.5.2015')
+      debugger
+      event.stopPropagation()
+      removeGuestInfo()
+      showEditVendor()
+      showVendorList()
+      localStorage.removeItem('tempName')
+      console.log('show vendor add edit view');
    })
    // future features
    // $('menu-export-vendors').click( () => {
@@ -38,19 +38,19 @@ $(() =>{
       }
    }
 
-   // identify buttons
+   // get information from "Add New Vendor form"
    let vendorFormCompile = () =>{
       console.log('get data from vendor form');
-      // let regEmail = /.+@.+\..+/i,
-      //     email = $('.add-edit-vendor').children('input').eq(1).val(),
-      //     fullName = $('.add-edit-vendor').children('input').eq(0).val(),
-      //     vendorData = {
-      //        alerts: []
-      //     };
-      //
-      // if (fullName == '') {
-      //    vendorData['alerts'].push('Name can\'t be blank')
-      // }
+      let regEmail = /.+@.+\..+/i,
+          email = $('.add-edit-vendor').children('input').eq(1).val(),
+          businessName = $('.add-edit-vendor').children('input').eq(0).val(),
+          vendorData = {
+             alerts: []
+          };
+
+      if (businessName == '') {
+         vendorData['alerts'].push('Name can\'t be blank')
+      }
       // if (email == '') {
       //    vendorData['alerts'].push('Email can\'t be blank')
       // } else if (!regEmail.test(email)) {
@@ -63,7 +63,7 @@ $(() =>{
       // } else {
       //    let vendorData = {
       //       myAccount: localStorage.myAccount,
-      //       fullName: fullName,
+      //       businessName: businessName,
       //       email: email
       //    }
       //    $('.add-edit-vendor').children('input').eq(0).val('')
@@ -279,7 +279,7 @@ $(() =>{
    }
    let renderEdit = function(data,id){
       $('button.create-vendor').hide()
-      $('.add-edit-vendor').children('input').eq(0).val(data.fullName)
+      $('.add-edit-vendor').children('input').eq(0).val(data.businessName)
       $('.add-edit-vendor').children('input').eq(1).val(data.email)
 
       if ($('.add-edit-vendor').children('button.updateVendor')) {
@@ -478,7 +478,7 @@ $(() =>{
    let saveTheDate = function(){
       if (localStorage.myVendor) {
          let vendorUpdate = {
-            'fullName': $('.vendor-svtd').children('input').eq(0).val() ,
+            'businessName': $('.vendor-svtd').children('input').eq(0).val() ,
             'id': localStorage.myVendor ,
             'street_1': $('.vendor-svtd').children('input').eq(1).val() ,
             'street_2': $('.vendor-svtd').children('input').eq(2).val() ,
@@ -645,7 +645,7 @@ $(() =>{
          }
          let vendorUpdate = {
             'id': localStorage.myVendor ,
-            'fullName': $('.vendor-rsvp').children().eq(3).children('input').val() ,
+            'businessName': $('.vendor-rsvp').children().eq(3).children('input').val() ,
             'attending': $('input[name=attending]:checked').val() ,
             'entree': $('input[name=entree]:checked').val() ,
             'diet': $('.vendor-rsvp').children().eq(5).children('input').val() ,
