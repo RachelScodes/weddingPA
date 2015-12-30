@@ -9,13 +9,18 @@ background-image: url(https://hilarychanphotography.files.wordpress.com/2014/05/
 background-image: url(http://www.gruberphotographers.com/wp-content/gallery/ellis-island-immigration-museum-wedding/Venue_EllisIsland_003.jpg);
 */
 
+/*
+GLOBAL BASICS
+*/
 html {
     background-image: url(http://wallpaperdesktop.org/wp-content/uploads/2014/10/beautiful-beach-wedding-venues.jpg);
     background-position-y: center;
+    background-attachment: fixed;
     background-size: cover;
     background-repeat: no-repeat;
     background-position-x: center;
     height: 100%;
+    overflow: hidden;
 }
 
 .new-bg {
@@ -25,6 +30,7 @@ html {
 div, input, nav, header, footer {
    box-sizing: border-box;
 }
+
 .forms:empty {
    display: none;
 }
@@ -34,19 +40,24 @@ body {
    text-align: center;
 }
 
+h1 {
+   font-size: 3em;
+   font-family: 'Amatic SC', cursive;
+   margin: 10px;
+}
+
+/*
+top navigation bar
+*/
+
 .top-nav {
    width: 500px;
    padding: 10px;
-   margin: 50px auto;
+   margin: 50px auto 10px auto;
    background-color: rgba(255, 255, 255, 0.5);
    border-radius: 10px;
 }
 
-h1 {
-    font-size: 3em;
-    font-family: 'Amatic SC', cursive;
-    margin: 10px;
-}
 
 ul.signin-signup,
 ul.verify-signout {
@@ -185,17 +196,17 @@ select {
     width: 150px;
 }
 
-div#angularize {
-    width: 70%;
+#angularize {
+    width: 90%;
     margin: 0 auto;
     background-color: rgba(255,255,255,0.7);
     border-radius: 10px;
     padding: 20px;
+    max-width: 900px;
+    max-height: 520px;
+    overflow-y: auto;
 }
 
-html {
-    background-attachment: fixed;
-}
 
 select {
    background: rgba(151, 85, 128, 0.82);
@@ -251,10 +262,6 @@ button.hide-info {
     z-index: 200;
 }
 
-html {
-    overflow: hidden;
-}
-
 h2 {
     font-family: 'Amatic Sc', cursive;
     font-size: 2em;
@@ -274,22 +281,15 @@ ul.options-menu li:hover {
     cursor: pointer;
 }
 
-.signin-signup li:hover, .verify-signout li:hover {
+.signin-signup li:hover,
+.verify-signout li:hover {
     text-decoration: underline;
     cursor: pointer;
 }
+
 .no-hover:hover{
    text-decoration: none !important;
    cursor: default !important;
-}
-
-nav.top-nav {
-    margin: 50px auto 10px auto;
-}
-
-div#angularize {
-    max-height: 520px;
-    overflow-y: auto;
 }
 
 .add-edit-guest,
@@ -382,7 +382,7 @@ ul.options-menu {
     margin: 0;
 }
 
-.add-edit-guest button, 
+.add-edit-guest button,
 .add-edit-vendor button {
     display: inline-block;
     font-size: 1em;
@@ -440,11 +440,6 @@ span.vendor-type {
     width: 30%;
     min-width: 100px;
     max-width: 75%;
-}
-
-div#angularize {
-    width: 90%;
-    max-width: 900px;
 }
 
 .new-account-form button {

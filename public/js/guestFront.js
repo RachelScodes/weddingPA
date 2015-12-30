@@ -7,7 +7,8 @@ $(() =>{
       }
    }
 
-   // define menu items
+   // define guest-related menu items
+   // for logged in user (aka top-navigation bar_)
    $('#menu-view-guests').click( () => {
       event.stopPropagation()
       $('.guest-svtd').hide()
@@ -40,14 +41,6 @@ $(() =>{
       showRsvpForm()
    })
 
-
-   let removeVendorInfo = function(){
-      if ($('.add-edit-vendor').length != 0) {
-         $('.add-edit-vendor').remove()
-         $('#vendor-list').remove()
-      }
-   }
-
    // future features
    // $('menu-send-emails').click( () => {
    //    event.stopPropagation()
@@ -60,7 +53,7 @@ $(() =>{
    //    console.log('');
    // })
 
-   // identify buttons
+   // submit a save-the-date form
    let svtdSaveButt = $('button#svtd-submit');
        svtdSaveButt.click(() => {
          event.stopPropagation()
@@ -257,7 +250,7 @@ $(() =>{
              fetchGuest(id)
           });
 
-      let svtdButt = $('<button>')
+      let emailButt = $('<button>')
             .attr('class','email-guest')
             .text('Email')
             .attr('value',id)
@@ -271,21 +264,6 @@ $(() =>{
                // localStorage.setItem('tempName',guestName)
                // $('#menu-svtd').click()
            });
-      // let rsvpButt = $('<button>')
-      //      .attr('class','rsvp-guest')
-      //      .text('RSVP')
-      //      .attr('value',id)
-      //      .appendTo(container)
-      //      .click(() => {
-      //        event.stopPropagation()
-      //         let guestName = $(event.toElement).eq(0).parent().siblings().eq(0).text()
-      //         let id = $(event.toElement).attr('value')
-      //         localStorage.setItem('myGuest',id)
-      //         localStorage.setItem('tempName',guestName)
-      //         $('#menu-rsvp').click()
-      //      });
-
-
 
       let deleteGuestButt = $('<button>')
           .attr('class','delete-guest')
@@ -552,23 +530,24 @@ $(() =>{
 
    }
 
+   // draw the sample RSVP form
    let showRsvpForm = function(){
       // $('.guest-rsvp').hide()
 
-      if ($('div.guest-rsvp')) {
-         $('div.guest-rsvp').empty().remove()
-      }
+      // erase old div
+      $('div.guest-rsvp').remove()
 
+      // draw new containing div
       let formDiv = $('<div>').attr('class','guest-rsvp')
-      $('<h2>')
+
+      // add introduction
+      $('<h2>').text('You\'re invited to ' + $('#who').text() + '\'s wedding!')
          .attr('class','rsvp-greet')
-         .text('You\'re invited to ' + $('#who').text() + '\'s wedding!')
+         .appendTo(formDiv);
+      $('<p>').text('Please enter your rsvp information below:')
          .appendTo(formDiv);
 
-      $('<p>')
-         .text('Please enter your rsvp information below:')
-         .appendTo(formDiv);
-
+      // attending radio buttons
       let rsvpRadio = {
          'Gladly Attending': 'true',
          'Regretfully Declining': 'false',
@@ -578,24 +557,23 @@ $(() =>{
          'Will not respond but am attending anyway': 'true',
          'I go where the free food is': 'true'
       }
-
       let attending = $('<div>').attr('class','attending-radios')
          .append('<label>Will you be attending?</label>')
          .appendTo(formDiv)
-
       for (var i in rsvpRadio) {
          addBreak(attending)
          let radioButton = '<input type="radio" name="attending" value="'+rsvpRadio[i]+'">'+i
          attending.append(radioButton)
       }
 
-      $('<div>')
-      .append('<label>Verify/correct your name:</label>')
-      .append(
-         $('<input>')
-            .attr('type','text')
-            .attr('placeholder','Name as it should Appear'))
-      .appendTo(formDiv)
+      // view/correct name
+      $('<div>').attr('class','fullName')
+         .append('<label>Verify/correct your name:</label>')
+         .append(
+            $('<input>')
+               .attr('type','text')
+               .attr('placeholder','Name as it should Appear'))
+         .appendTo(formDiv)
 
       let entreeChoices = {
          "Chicken": 'entree',
@@ -686,7 +664,10 @@ $(() =>{
 
    }
 
+   // what happens when we click
+   // submit on the SVTD form screen
    let saveRsvpResponse = function(){
+      // if referred from guestlist, submit info
       if (localStorage.myGuest) {
          let plusOne = function(){
             return ($('.guest-rsvp').children('select').eq(0).val == "true") ? true : false;
@@ -697,7 +678,7 @@ $(() =>{
             'attending': $('input[name=attending]:checked').val() ,
             'entree': $('input[name=entree]:checked').val() ,
             'diet': $('.guest-rsvp').children().eq(5).children('input').val() ,
-            'plus': plusOne() ,
+            'plus': plusOne(),
             'entreep': $('input[name=entreep]:checked').val() ,
             'dietp': $('.guest-rsvp').children().eq(8).children('input').eq(0).val() ,
             'song': $('.guest-rsvp').children().eq(9).children('input').eq(0).val() ,
@@ -713,21 +694,29 @@ $(() =>{
             localStorage.removeItem(tempName);
             showAllGuests(successful);
          });
-      } else {
-         // console.log('this is just an example');
+      } else { // if referred from example page
          alert('this is just an example')
       }
    }
 
+   // if vendor info was shown, remove it
+   let removeVendorInfo = function(){
+      if ($('.add-edit-vendor').length != 0) {
+         $('.add-edit-vendor').remove()
+         $('#vendor-list').remove()
+      }
+   }
+
+   // clears localStorage
    let logEmOut = () =>{
       if (localStorage.token) {
-         localStorage.token = "";
-         localStorage.myAccount = "";
-         console.log('logged out');
+         localStorage.removeItem('token');
+         localStorage.removeItem('myAccount');
       }
       goHome()
    }
 
+   // going home reloads the page and clears cache
    let goHome = () =>{
       location.reload()
    }
